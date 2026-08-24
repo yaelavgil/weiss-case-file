@@ -458,6 +458,17 @@ function normalize(s){
   return (s||"").toString().trim().toLowerCase().replace(/\s+/g,"").replace(/["'׳״]/g,"");
 }
 
+// גימטריה: המספרים הפיזיים על הפריטים מתורגמים לאותיות עבור חידת הסידור.
+const GEMATRIA_TO_LETTER = {
+  "1":"א","2":"ב","3":"ג","4":"ד","5":"ה","6":"ו","7":"ז","8":"ח","9":"ט",
+  "10":"י","20":"כ","30":"ל","40":"מ","50":"נ","60":"ס","70":"ע","80":"פ","90":"צ",
+  "100":"ק","200":"ר","300":"ש","400":"ת"
+};
+function toDecodedChar(expected){
+  const s = (expected||"").toString().trim();
+  return GEMATRIA_TO_LETTER[s] || s;
+}
+
 /* ---------- מבנה השלבים ----------
    type: 'intro' | 'find' | 'multiFind' | 'codeEntry' | 'major' | 'family' | 'trueEnding'
 */
@@ -489,18 +500,19 @@ const STEPS = [
     narrative:
 `באזור המשחקים משהו לא מסתדר.
 כמה חפצים שם — או שלא היו כאן קודם, או שהוחלפו באחרים.
-לכל אחד מהם מודבקת אות עברית, מוסתרת מאחור.
-מצאו את כולם, ואספו את האותיות.`,
+לכל אחד מהם מודבק מספר קטן, מוסתר מאחור.
+מצאו את כולם, ואספו את המספרים.`,
     items:[
-      {id:"pez", label:"מתקן ה-PEZ של מואנה — האות שמצאתם", expected:"מ", img:"🌺"},
-      {id:"sq1", label:"סקוושי מס׳ 1 — האות שמצאתם", expected:"ו", img:"🧸"},
-      {id:"board", label:"לוח הציור המגנטי — האות שמצאתם", expected:"א", img:"🎨"},
-      {id:"stitch", label:"פריט סטיץ׳ — האות שמצאתם", expected:"נ", img:"👽"},
-      {id:"sq2", label:"סקוושי מס׳ 2 — האות שמצאתם", expected:"ה", img:"🟣"}
+      {id:"stitch", label:"צמיד סטיץ׳ — המספר שמצאתם", expected:"50", img:"👽"},
+      {id:"board", label:"לוח הציור המגנטי — המספר שמצאתם", expected:"1", img:"🎨"},
+      {id:"glow", label:"הצעצוע הירוק הזוהר — המספר שמצאתם", expected:"40", img:"🟢"},
+      {id:"flower", label:"סקוושי הפרח — המספר שמצאתם", expected:"6", img:"🌸"},
+      {id:"cube", label:"כדור החידה (Magic Cube) — המספר שמצאתם", expected:"5", img:"🔮"}
     ],
     hints:[
-      "רמז 1: יש כאן חמישה חפצים חדשים — לא ארבעה.",
-      "רמז 2: כל אות בפני עצמה לא אומרת כלום. חכו עד שיהיו לכן כל החמש."
+      "רמז 1: יש כאן חמישה חפצים עם מספר — ועוד חפץ אחד שלא נושא מספר בכלל.",
+      "רמז 2: למואנה עצמה אין מספר. יש לה משהו אחר — היא יודעת איך לפענח.",
+      "רמז 3: המספרים הם ערכי גימטריה. לכל מספר יש אות עברית תואמת — אבל זה סוד לשלב הבא."
     ],
     wrongItemMsg:"בדקו שוב את הראיה.",
     puzzleTitle:"כל הראיות נאספו.",
@@ -1005,7 +1017,7 @@ function renderMultiFind(step, card, actions){
     const tileRow = el("div","tile-row");
     order.forEach((itemId, idx)=>{
       const item = step.items.find(i=>i.id===itemId);
-      const tile = el("div","letter-tile"+(selIdx===idx?" selected":""), esc(item ? item.expected : "?"));
+      const tile = el("div","letter-tile"+(selIdx===idx?" selected":""), esc(item ? toDecodedChar(item.expected) : "?"));
       tile.setAttribute("role","button");
       tile.tabIndex = 0;
       tile.onclick = ()=>{
@@ -1034,7 +1046,7 @@ function renderMultiFind(step, card, actions){
     btn.onclick = ()=>{
       const word = state.tileOrder[step.id].map(id => {
         const item = step.items.find(i=>i.id===id);
-        return item ? item.expected : "";
+        return item ? toDecodedChar(item.expected) : "";
       }).join("");
       if(normalize(word)===normalize(step.revealWord)){
         state[step.id+"_decoded"] = true;
@@ -1351,9 +1363,10 @@ const SETUP_ITEMS = [
     {id:"table_qr", label:"קישור/QR לפתיחת תיק החקירה, מונח בגלוי"}
   ]},
   { group:"אזור המשחקים", items:[
-    {id:"play_items", label:"5 חפצים חדשים: PEZ של מואנה, סקוושי 1, לוח ציור מגנטי, פריט סטיץ׳, סקוושי 2", meta:"או כל 5 פריטים אחרים לבחירתכם"},
-    {id:"play_letters", label:"כתבו את האותיות מ / ו / א / נ / ה — אחת על כל חפץ, מוסתרת מאחור", meta:"אות אחת לכל חפץ (לא לפי הסדר של מואנה!) — הילדות מרכיבות את הסדר הנכון באפליקציה עצמה. לשינוי ההתאמות, ערכו expected בקוד לכל פריט ב-play_area_hunt. תמונת החפץ לא מוצגת עד שהאות הנכונה מוקלדת"},
-    {id:"play_pez_note", label:"בתוך מתקן ה-PEZ של מואנה עצמו: פתק קטן בכתב יד \"סוכריות במגירה\"", meta:"האפליקציה לא מגלה מה כתוב בפתק — זו ראיה פיזית בלבד, מוצמדת/מוחבאת ממש בפנים המתקן"}
+    {id:"play_items", label:"5 חפצים עם מספר: צמיד סטיץ׳, לוח ציור מגנטי, צעצוע ירוק זוהר, סקוושי פרח, כדור חידה (Magic Cube)", meta:"מספר אחד מוסתר מאחורי כל חפץ. מואנה (PEZ) עצמה לא נושאת מספר — ראו הפריט הבא"},
+    {id:"play_numbers", label:"כתבו את המספרים 50 / 1 / 40 / 6 / 5 — אחד על כל חפץ (בהתאמה: סטיץ׳/לוח/ירוק/פרח/קוביה)", meta:"אלה ערכי גימטריה (נ,א,מ,ו,ה). לשינוי ההתאמות, ערכו expected בקוד לכל פריט ב-play_area_hunt. תמונת החפץ לא מוצגת עד שהמספר הנכון מוקלד"},
+    {id:"play_pez_clue", label:"בתוך/על מתקן ה-PEZ של מואנה: פתק בכתב יד שמסביר \"מספר = אות\" (מפתח הגימטריה)", meta:"זה מה שמלמד אותן לפענח את 5 המספרים לאותיות. מואנה לא נושאת מספר בעצמה"},
+    {id:"play_pez_note2", label:"בנוסף, בתוך מתקן ה-PEZ: פתק קטן \"סוכריות במגירה\"", meta:"האפליקציה לא מגלה מה כתוב בפתקים — אלה ראיות פיזיות בלבד"}
   ]},
   { group:"מגירת הממתקים", items:[
     {id:"candy_pez", label:"סוכריית ה-PEZ עצמה (מהמתקן של מואנה) — אחד מחמשת הממתקים"},
