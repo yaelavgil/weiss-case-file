@@ -345,20 +345,27 @@
   .cover h1{font-size:clamp(28px,8vw,40px);font-weight:800;}
   .cover p{color:var(--ink-soft);max-width:380px;white-space:pre-line;font-size:15.5px;font-weight:400;}
   .paw{font-size:26px;opacity:.6;}
-
-  /* case-closed / final reveal — deliberately dark, regardless of page theme */
-  .ending{
-    text-align:center;padding:56px 24px;display:flex;flex-direction:column;gap:16px;align-items:center;
-    background:#1e2a45;color:#f2ead6;border-radius:0;
-    min-height:100%;flex:1;position:relative;
+  .cover-poster{
+    width:100%;max-width:320px;border-radius:12px;box-shadow:var(--shadow);
+    animation:coverPosterIn .7s ease both;
   }
-  .ending::before{content:"🐾";position:absolute;top:18px;insetInlineStart:20px;font-size:20px;opacity:.3;}
-  .ending::after{content:"🐾";position:absolute;bottom:18px;insetInlineEnd:20px;font-size:20px;opacity:.3;transform:scaleX(-1);}
-  .ending h1{font-size:clamp(26px,7vw,36px);font-weight:800;color:#f2ead6;}
-  .ending p{white-space:pre-line;color:#cdd3df;max-width:400px;font-size:15.5px;font-weight:400;}
-  .stamp-final{
-    font-weight:800;font-size:20px;color:#8fd39a;border:3px solid #8fd39a;
-    border-radius:10px;padding:10px 22px;transform:rotate(-3deg);
+  @keyframes coverPosterIn{
+    0%{opacity:0;transform:scale(.94) translateY(10px);}
+    100%{opacity:1;transform:scale(1) translateY(0);}
+  }
+
+  /* case-closed / final reveal — full-bleed poster, deliberately dark, regardless of page theme */
+  .ending{
+    position:fixed;inset:0;z-index:50;
+    background:#1e2a45;overflow:hidden;
+  }
+  .ending-poster{
+    width:100%;height:100%;object-fit:cover;display:block;
+    animation:endingFullIn 1.1s cubic-bezier(.22,.9,.3,1) both;
+  }
+  @keyframes endingFullIn{
+    0%{opacity:0;transform:scale(1.08);}
+    100%{opacity:1;transform:scale(1);}
   }
 
   /* setup mode */
@@ -417,16 +424,6 @@
   .star.on{opacity:1;transform:scale(1.12);}
   .star:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
 
-  /* ending photo */
-  .polaroid{
-    margin:6px auto 0;width:190px;background:#fdfcf8;padding:10px 10px 24px;border-radius:3px;
-    box-shadow:var(--shadow);transform:rotate(-2deg);text-align:center;
-  }
-  .polaroid .frame{
-    width:100%;aspect-ratio:1/1;background:#e7e2d4;border-radius:2px;
-    display:flex;align-items:center;justify-content:center;font-size:36px;
-  }
-  .polaroid .cap{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:500;font-size:12.5px;margin-top:8px;color:#5a5648;}
 </style>
 </head>
 <body>
@@ -789,7 +786,39 @@ function loadState(){
   }catch(e){}
   return { completed:{}, hintsShown:{}, entranceFound:{}, itemAnswers:{}, discoveryOrder:{}, tileOrder:{}, tileSelected:{}, plantEnabled:true, textDrafts:{}, codeDrafts:{}, ratings:{} };
 }
-function saveState(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+// ---------- מעקב התקדמות מרחוק (אופציונלי) ----------
+// כדי להפעיל: יוצרים פרויקט Firebase חינמי (Realtime Database, במצב בדיקה),
+// ומדביקים כאן את כתובת מסד הנתונים, לדוגמה:
+// "https://weiss-case-xxxxx-default-rtdb.firebaseio.com"
+// כל עוד זה ריק, כלום לא נשלח והמשחק פועל בדיוק כרגיל.
+const FIREBASE_DB_URL = "";
+
+let _reportTimer = null;
+function reportProgressToCloud(){
+  if(!FIREBASE_DB_URL) return;
+  clearTimeout(_reportTimer);
+  _reportTimer = setTimeout(()=>{
+    try{
+      const step = currentStep();
+      const payload = {
+        pct: percent(),
+        stepId: step.id,
+        stepTitle: step.title,
+        updatedAt: Date.now()
+      };
+      fetch(FIREBASE_DB_URL.replace(/\/$/,"") + "/weissCaseProgress.json", {
+        method:"PUT",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      }).catch(()=>{});
+    }catch(e){}
+  }, 800);
+}
+
+function saveState(s){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  reportProgressToCloud();
+}
 let state = loadState();
 
 function isEnabled(step){
@@ -906,6 +935,7 @@ function render(){
   root.innerHTML = "";
   const params = new URLSearchParams(location.search);
   if(params.get("setup")==="true"){ renderSetup(); return; }
+  if(params.get("monitor")==="true"){ renderMonitor(); return; }
 
   const step = currentStep();
   const app = el("div","app");
@@ -913,7 +943,6 @@ function render(){
   if(step.type==="intro"){
     app.appendChild(renderCover(step));
   } else if(step.type==="trueEnding"){
-    app.insertAdjacentHTML("beforeend", progressHeaderHTML());
     app.appendChild(renderTrueEnding(step));
   } else {
     app.insertAdjacentHTML("beforeend", progressHeaderHTML());
@@ -924,9 +953,12 @@ function render(){
   root.appendChild(app);
 }
 
+const COVER_POSTER_URL = "cover.jpg";
+
 function renderCover(step){
   const cover = el("div","cover");
   cover.innerHTML = `
+    <img class="cover-poster" src="${esc(COVER_POSTER_URL)}" alt="משפחת וייס יוצאת לחקירה!">
     <span class="paw">🐾</span>
     <span class="case-no">תיק מס׳ WF-10 · פתוח</span>
     <h1>${esc(step.title)}</h1>
@@ -939,20 +971,11 @@ function renderCover(step){
   return cover;
 }
 
-// כדי לשים תמונה אמיתית: הפכו אותה ל-base64 ושימו אותה כאן, לדוגמה:
-// const ENDING_PHOTO_DATA_URL = "data:image/jpeg;base64,....";
-const ENDING_PHOTO_DATA_URL = "";
+const ENDING_POSTER_URL = "ending.jpg";
 
 function renderTrueEnding(step){
   const wrap = el("div","ending");
-  wrap.innerHTML = `
-    <div class="stamp-final">${esc(step.title)}</div>
-    <div class="polaroid">
-      <div class="frame">${ENDING_PHOTO_DATA_URL ? `<img src="${esc(ENDING_PHOTO_DATA_URL)}" style="width:100%;height:100%;object-fit:cover;border-radius:2px">` : "📸"}</div>
-      <div class="cap">תודה על האירוח!</div>
-    </div>
-    <p>${esc(step.narrative)}</p>
-  `;
+  wrap.innerHTML = `<img class="ending-poster" src="${esc(ENDING_POSTER_URL)}" alt="${esc(step.title)}">`;
   return wrap;
 }
 
@@ -1411,10 +1434,8 @@ function openParentModal(){
 
   const actions = el("div");
   actions.style.cssText = "display:flex;flex-direction:column;gap:10px;margin-top:14px;";
-  const revealBtn = el("button","btn ghost","גלו את קוד/תשובת השלב");
-  const skipBtn = el("button","btn primary","דלגו לשלב הבא");
-  actions.appendChild(revealBtn);
-  actions.appendChild(skipBtn);
+  const mainBtn = el("button","btn primary","הצג תשובה ועברו הלאה");
+  actions.appendChild(mainBtn);
   modal.appendChild(actions);
 
   const closeBtn = el("button","btn ghost","סגירה");
@@ -1429,15 +1450,18 @@ function openParentModal(){
     return false;
   }
 
-  revealBtn.onclick = ()=>{
-    if(!checkCode()) return;
-    const ans = getStepAnswer(step);
-    let box = modal.querySelector(".answer-box");
-    if(!box){ box = el("div","answer-box"); modal.insertBefore(box, closeBtn); }
-    box.textContent = ans ? `הקוד/תשובה לשלב הנוכחי:\n${ans}` : "אין קוד בשלב הזה — אפשר רק לדלג הלאה.";
-  };
-  skipBtn.onclick = ()=>{
-    if(!checkCode()) return;
+  let revealed = false;
+  mainBtn.onclick = ()=>{
+    if(!revealed){
+      if(!checkCode()) return;
+      const ans = getStepAnswer(step);
+      let box = modal.querySelector(".answer-box");
+      if(!box){ box = el("div","answer-box"); modal.insertBefore(box, actions); }
+      box.textContent = ans ? `הקוד/תשובה לשלב הנוכחי:\n${ans}` : "אין קוד בשלב הזה — אפשר פשוט להמשיך.";
+      revealed = true;
+      mainBtn.textContent = "להמשך לשלב הבא →";
+      return;
+    }
     complete(step.id);
     closeParentModal();
     render();
@@ -1509,9 +1533,6 @@ const SETUP_ITEMS = [
     {id:"owala_all4", label:"כל ארבעת בקבוקי המים אותרו ונאספו יחד"},
     {id:"owala_wrap", label:"עטופים כקופסה יפה אחת, מוסתרת מתחת למיטת ההורים"},
     {id:"owala_test", label:"בדקתי את מסך הסיום באפליקציה"}
-  ]},
-  { group:"מסך סיום", items:[
-    {id:"ending_photo", label:"הוסיפו תמונה אמיתית של המשפחה המארחת", meta:"החליפו את ENDING_PHOTO_DATA_URL בקובץ ל-base64 של התמונה"}
   ]}
 ];
 
@@ -1565,6 +1586,59 @@ function renderSetup(){
   root.appendChild(wrap);
 }
 function renderSetup2(){ renderSetup(); }
+
+function renderMonitor(){
+  const wrap = el("div","setup-wrap");
+  wrap.innerHTML = `<h1>📡 מעקב התקדמות מרחוק</h1><div class="hint">לצפייה בלבד — לא ניתן לשחק מהמסך הזה.</div>`;
+
+  if(!FIREBASE_DB_URL){
+    const box = el("div","note-reveal");
+    box.style.marginTop = "10px";
+    box.textContent = "עדיין לא הוגדר חיבור לענן (FIREBASE_DB_URL ריק בקוד).\nברגע שיוגדר, המסך הזה יציג את ההתקדמות של המשפחה בזמן אמת.";
+    wrap.appendChild(box);
+    root.innerHTML = ""; root.appendChild(wrap);
+    return;
+  }
+
+  const statusBox = el("div","note-reveal","טוען...");
+  statusBox.style.marginTop = "10px";
+  wrap.appendChild(statusBox);
+
+  async function poll(){
+    try{
+      const res = await fetch(FIREBASE_DB_URL.replace(/\/$/,"") + "/weissCaseProgress.json", {cache:"no-store"});
+      const data = await res.json();
+      if(!data){
+        statusBox.textContent = "עדיין אין נתונים — המשפחה טרם התחילה, או שהדפדפן שלהם לא שלח עדכון.";
+        return;
+      }
+      const secondsAgo = Math.round((Date.now() - (data.updatedAt||0)) / 1000);
+      const agoText = secondsAgo < 60 ? `לפני ${secondsAgo} שניות` : `לפני ${Math.round(secondsAgo/60)} דקות`;
+      statusBox.innerHTML = "";
+      const pctLine = el("div", null, `התקדמות: ${esc(String(data.pct))}%`);
+      pctLine.style.cssText = "font-size:22px;font-weight:800;color:var(--green);";
+      const stepLine = el("div", null, `שלב נוכחי: ${esc(data.stepTitle||data.stepId||"—")}`);
+      stepLine.style.cssText = "margin-top:8px;font-size:15px;";
+      const timeLine = el("div", null, `עודכן ${agoText}`);
+      timeLine.style.cssText = "margin-top:6px;font-size:12.5px;color:var(--ink-faint);";
+      statusBox.appendChild(pctLine);
+      statusBox.appendChild(stepLine);
+      statusBox.appendChild(timeLine);
+    }catch(e){
+      statusBox.textContent = "שגיאה בטעינת הנתונים. ננסה שוב...";
+    }
+  }
+  poll();
+  const iv = setInterval(poll, 5000);
+  window.addEventListener("beforeunload", ()=>clearInterval(iv));
+
+  const back = el("a","back-link","חזרה למסך השחקנים →");
+  back.href = location.pathname;
+  wrap.appendChild(back);
+
+  root.innerHTML = "";
+  root.appendChild(wrap);
+}
 
 render();
 </script>
