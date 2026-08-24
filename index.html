@@ -469,6 +469,28 @@ function toDecodedChar(expected){
   return GEMATRIA_TO_LETTER[s] || s;
 }
 
+// כאשר step.validNumbers מוגדר, לא משנה איזה מספר צמוד לאיזה פריט —
+// חשוב רק שביחד, כל חמשת הפריטים יכסו בדיוק את הסט הנדרש (כל מספר פעם אחת).
+function fieldIsCorrect(step, it, val, answers){
+  if(step.validNumbers){
+    const nval = normalize(val);
+    if(nval==="") return false;
+    if(!step.validNumbers.map(normalize).includes(nval)) return false;
+    const dup = step.items.some(other => other.id!==it.id && normalize(answers[other.id]||"")===nval);
+    return !dup;
+  }
+  return normalize(val)===normalize(it.expected);
+}
+function multiFindAllCorrect(step, answers){
+  if(step.validNumbers){
+    const need = step.validNumbers.map(normalize).slice().sort();
+    const have = step.items.map(it => normalize(answers[it.id]||"")).slice().sort();
+    if(have.some(v=>v==="")) return false;
+    return JSON.stringify(need)===JSON.stringify(have);
+  }
+  return step.items.every(it => normalize(answers[it.id]) === normalize(it.expected));
+}
+
 /* ---------- מבנה השלבים ----------
    type: 'intro' | 'find' | 'multiFind' | 'codeEntry' | 'major' | 'family' | 'trueEnding'
 */
@@ -502,17 +524,20 @@ const STEPS = [
 כמה חפצים שם — או שלא היו כאן קודם, או שהוחלפו באחרים.
 לכל אחד מהם מודבק מספר קטן, מוסתר מאחור.
 מצאו את כולם, ואספו את המספרים.`,
+    // אין חשיבות לאיזה מספר צמוד לאיזה פריט — האפליקציה מקבלת כל שילוב,
+    // כל עוד חמשת הפריטים ביחד נושאים בדיוק את חמשת המספרים האלה (כל אחד פעם אחת):
+    validNumbers:["40","6","1","50","5"],
     items:[
-      {id:"stitch", label:"צמיד סטיץ׳ — המספר שמצאתם", expected:"50", img:"👽"},
-      {id:"board", label:"לוח הציור המגנטי — המספר שמצאתם", expected:"1", img:"🎨"},
-      {id:"glow", label:"הצעצוע הירוק הזוהר — המספר שמצאתם", expected:"40", img:"🟢"},
-      {id:"flower", label:"סקוושי הפרח — המספר שמצאתם", expected:"6", img:"🌸"},
-      {id:"cube", label:"כדור החידה (Magic Cube) — המספר שמצאתם", expected:"5", img:"🔮"}
+      {id:"stitch", label:"צמיד סטיץ׳ — המספר שמצאתם", img:"👽"},
+      {id:"board", label:"לוח הציור המגנטי — המספר שמצאתם", img:"🎨"},
+      {id:"glow", label:"הצעצוע הירוק הזוהר — המספר שמצאתם", img:"🟢"},
+      {id:"flower", label:"סקוושי הפרח — המספר שמצאתם", img:"🌸"},
+      {id:"cube", label:"כדור החידה (Magic Cube) — המספר שמצאתם", img:"🔮"}
     ],
     hints:[
-      "רמז 1: יש כאן חמישה חפצים עם מספר — ועוד חפץ אחד שלא נושא מספר בכלל.",
-      "רמז 2: למואנה עצמה אין מספר. יש לה משהו אחר — היא יודעת איך לפענח.",
-      "רמז 3: המספרים הם ערכי גימטריה. לכל מספר יש אות עברית תואמת — אבל זה סוד לשלב הבא."
+      "רמז 1: חפשו רמז בתוך אחד הפריטים החדשים.",
+      "רמז 2: הרמז הזה מגיע ממישהי שהפליגה לבד מהאי מוטונוי.",
+      "רמז 3: תבדקו את מואנה עצמה מקרוב."
     ],
     wrongItemMsg:"בדקו שוב את הראיה.",
     puzzleTitle:"כל הראיות נאספו.",
@@ -909,12 +934,12 @@ function renderMultiFind(step, card, actions){
   state.tileOrder = state.tileOrder || {};
   state.tileSelected = state.tileSelected || {};
   const answers = state.itemAnswers[step.id] || {};
-  const allCorrect = step.items.every(it => normalize(answers[it.id]) === normalize(it.expected));
+  const allCorrect = multiFindAllCorrect(step, answers);
 
   if(!allCorrect){
     const list = el("div","evidence-list");
     step.items.forEach(it=>{
-      const wasCorrect = normalize(answers[it.id]) === normalize(it.expected);
+      const wasCorrect = fieldIsCorrect(step, it, answers[it.id]||"", answers);
       const top = el("div","ev-top");
       const thumb = el("div","ev-thumb"+(wasCorrect?" revealed":""), wasCorrect ? esc(it.img||"✓") : "❔");
       const labelEl = el("span","ev-label", esc(it.label));
@@ -943,7 +968,8 @@ function renderMultiFind(step, card, actions){
           thumb.textContent = "❔";
           return;
         }
-        const correct = normalize(val)===normalize(it.expected);
+        const current = state.itemAnswers[step.id] || {};
+        const correct = fieldIsCorrect(step, it, val, current);
         input.classList.remove("field-correct","field-wrong");
         void input.offsetWidth;
         input.classList.add(correct ? "field-correct" : "field-wrong");
@@ -962,8 +988,7 @@ function renderMultiFind(step, card, actions){
           thumb.textContent = "❔";
         }
 
-        const current = state.itemAnswers[step.id] || {};
-        const nowDone = step.items.every(x => normalize(x.id===it.id ? val : current[x.id]) === normalize(x.expected));
+        const nowDone = multiFindAllCorrect(step, current);
         if(nowDone){
           setTimeout(()=>{ render(); }, 700);
         }
@@ -1017,7 +1042,7 @@ function renderMultiFind(step, card, actions){
     const tileRow = el("div","tile-row");
     order.forEach((itemId, idx)=>{
       const item = step.items.find(i=>i.id===itemId);
-      const tile = el("div","letter-tile"+(selIdx===idx?" selected":""), esc(item ? toDecodedChar(item.expected) : "?"));
+      const tile = el("div","letter-tile"+(selIdx===idx?" selected":""), esc(item ? toDecodedChar(answers[item.id]) : "?"));
       tile.setAttribute("role","button");
       tile.tabIndex = 0;
       tile.onclick = ()=>{
@@ -1046,7 +1071,7 @@ function renderMultiFind(step, card, actions){
     btn.onclick = ()=>{
       const word = state.tileOrder[step.id].map(id => {
         const item = step.items.find(i=>i.id===id);
-        return item ? toDecodedChar(item.expected) : "";
+        return item ? toDecodedChar(answers[item.id]) : "";
       }).join("");
       if(normalize(word)===normalize(step.revealWord)){
         state[step.id+"_decoded"] = true;
@@ -1364,7 +1389,7 @@ const SETUP_ITEMS = [
   ]},
   { group:"אזור המשחקים", items:[
     {id:"play_items", label:"5 חפצים עם מספר: צמיד סטיץ׳, לוח ציור מגנטי, צעצוע ירוק זוהר, סקוושי פרח, כדור חידה (Magic Cube)", meta:"מספר אחד מוסתר מאחורי כל חפץ. מואנה (PEZ) עצמה לא נושאת מספר — ראו הפריט הבא"},
-    {id:"play_numbers", label:"כתבו את המספרים 50 / 1 / 40 / 6 / 5 — אחד על כל חפץ (בהתאמה: סטיץ׳/לוח/ירוק/פרח/קוביה)", meta:"אלה ערכי גימטריה (נ,א,מ,ו,ה). לשינוי ההתאמות, ערכו expected בקוד לכל פריט ב-play_area_hunt. תמונת החפץ לא מוצגת עד שהמספר הנכון מוקלד"},
+    {id:"play_numbers", label:"כתבו את המספרים 40 / 6 / 1 / 50 / 5 — אחד על כל חפץ, בכל סדר שנוח לכם", meta:"לא משנה איזה מספר על איזה חפץ! האפליקציה בודקת רק שביחד נמצאו בדיוק חמשת המספרים האלה (גימטריה של מ,ו,א,נ,ה). לשינוי הסט, ערכו validNumbers בקוד ב-play_area_hunt. תמונת החפץ לא מוצגת עד שמוקלד עליו מספר תקין"},
     {id:"play_pez_clue", label:"בתוך/על מתקן ה-PEZ של מואנה: פתק בכתב יד שמסביר \"מספר = אות\" (מפתח הגימטריה)", meta:"זה מה שמלמד אותן לפענח את 5 המספרים לאותיות. מואנה לא נושאת מספר בעצמה"},
     {id:"play_pez_note2", label:"בנוסף, בתוך מתקן ה-PEZ: פתק קטן \"סוכריות במגירה\"", meta:"האפליקציה לא מגלה מה כתוב בפתקים — אלה ראיות פיזיות בלבד"}
   ]},
