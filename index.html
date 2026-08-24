@@ -1436,6 +1436,18 @@ function openParentModal(){
     modal.appendChild(backBtn);
   }
 
+  const restartBtn = el("button","danger-btn","🔄 התחלה מחדש מהשלב הראשון");
+  restartBtn.style.marginTop = "8px";
+  restartBtn.onclick = ()=>{
+    if(!checkCode()) return;
+    if(!confirm("לאפס את כל ההתקדמות ולהתחיל את המשחק מהתחלה?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    state = loadState();
+    closeParentModal();
+    render();
+  };
+  modal.appendChild(restartBtn);
+
   const closeBtn = el("button","btn ghost","סגירה");
   closeBtn.style.marginTop = "8px";
   modal.appendChild(closeBtn);
