@@ -427,7 +427,7 @@
   <span class="deco-ring"></span>
   <span class="deco-torn"></span>
 </div>
-<div class="parent-tab" role="button" tabindex="0" aria-label="גישת הורה" onclick="openParentModal()">🐾</div>
+<div class="parent-tab" role="button" tabindex="0" aria-label="תקועים? עזרה" onclick="openParentModal()">🐾</div>
 <div id="root"></div>
 
 <script>
@@ -455,10 +455,6 @@ const CANDY_CODE = "אנלוס";
 
 // הקוד שנדביק מתחת למחזיק המגבות החדש במטבח. שנו כרצונכם.
 const KITCHEN_CODE = "דלק";
-
-// קוד הורה: תמיד זמין דרך הכפתור הקטן בצד המסך, כדי לחשוף רמז/קוד או לדלג הלאה
-// אם ילדה נתקעת גם אחרי כל הרמזים.
-const PARENT_CODE = "מיאגי";
 
 function normalize(s){
   return (s||"").toString().trim().toLowerCase().replace(/\s+/g,"").replace(/["'׳״]/g,"");
@@ -1411,17 +1407,7 @@ function openParentModal(){
   const overlay = el("div","parent-overlay");
   overlay.id = "parent-overlay";
   const modal = el("div","parent-modal");
-  modal.innerHTML = `<h3>🐾 גישת הורה</h3><div class="sub">לשימוש ההורים בלבד</div>`;
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.className = "text-input";
-  input.placeholder = "קוד הורה...";
-  input.style.marginTop = "4px";
-  modal.appendChild(input);
-
-  const msg = el("div","wrong-msg","");
-  modal.appendChild(msg);
+  modal.innerHTML = `<h3>🐾 תקועים?</h3><div class="sub">עזרה לשלב הנוכחי</div>`;
 
   const actions = el("div");
   actions.style.cssText = "display:flex;flex-direction:column;gap:10px;margin-top:14px;";
@@ -1429,17 +1415,26 @@ function openParentModal(){
   actions.appendChild(mainBtn);
   modal.appendChild(actions);
 
+  const totalHints = (step.hints && step.hints.length) || 0;
+  const shownHints = state.hintsShown[step.id] || 0;
+  const hintsLeft = Math.max(0, totalHints - shownHints);
+  if(hintsLeft > 0){
+    mainBtn.disabled = true;
+    const note = el("div","hint-line", `גלו קודם את כל הרמזים בשלב (נשארו ${hintsLeft}) כדי לפתוח את האפשרות הזאת.`);
+    note.style.cssText = "margin-top:10px;text-align:center;";
+    modal.insertBefore(note, actions);
+  }
+
   if(hasPreviousStep()){
     const backBtn = el("button","btn ghost","← חזרה לשלב הקודם");
     backBtn.style.marginTop = "8px";
-    backBtn.onclick = ()=>{ if(!checkCode()) return; goBack(); };
+    backBtn.onclick = goBack;
     modal.appendChild(backBtn);
   }
 
   const restartBtn = el("button","danger-btn","🔄 התחלה מחדש מהשלב הראשון");
   restartBtn.style.marginTop = "8px";
   restartBtn.onclick = ()=>{
-    if(!checkCode()) return;
     if(!confirm("לאפס את כל ההתקדמות ולהתחיל את המשחק מהתחלה?")) return;
     localStorage.removeItem(STORAGE_KEY);
     state = loadState();
@@ -1452,18 +1447,10 @@ function openParentModal(){
   closeBtn.style.marginTop = "8px";
   modal.appendChild(closeBtn);
 
-  function checkCode(){
-    if(normalize(input.value)===normalize(PARENT_CODE)) return true;
-    input.classList.add("input-wrong");
-    msg.textContent = "קוד שגוי.";
-    setTimeout(()=>input.classList.remove("input-wrong"), 400);
-    return false;
-  }
-
   let revealed = false;
   mainBtn.onclick = ()=>{
+    if(hintsLeft > 0) return;
     if(!revealed){
-      if(!checkCode()) return;
       const ans = getStepAnswer(step);
       let box = modal.querySelector(".answer-box");
       if(!box){ box = el("div","answer-box"); modal.insertBefore(box, actions); }
@@ -1481,13 +1468,12 @@ function openParentModal(){
 
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
-  input.focus();
 }
 
 /* ---------- host setup mode ---------- */
 const SETUP_ITEMS = [
-  { group:"גישת הורה", items:[
-    {id:"parent_code_known", label:`קוד ההורה: "${PARENT_CODE}"`, meta:"זמין בכל שלב דרך כפתור הכפה הקטן והעדין בצד המסך — מציג את התשובה/קוד הנוכחי, או מדלג לשלב הבא בלחיצה אחת. שימושי אם ילדה נתקעת גם אחרי כל הרמזים"}
+  { group:"עזרה לתקועים", items:[
+    {id:"parent_help_known", label:"כפתור הכפה הקטן והעדין בצד המסך", meta:"זמין בכל שלב, בלי קוד. מציג את התשובה/קוד הנוכחי ומדלג לשלב הבא בלחיצה אחת — אבל רק אחרי שכל הרמזים של השלב נחשפו"}
   ]},
   { group:"שולחן קבלת פנים", items:[
     {id:"table_cake", label:"עוגת גבינה על השולחן"},
@@ -1580,9 +1566,6 @@ function renderSetup(){
 
   const resetBtn = el("button","danger-btn","איפוס התקדמות המשחק (למארח בלבד)");
   resetBtn.onclick = ()=>{
-    const code = prompt("קוד הורה לאישור האיפוס:");
-    if(code===null) return;
-    if(normalize(code)!==normalize(PARENT_CODE)){ alert("קוד שגוי."); return; }
     if(confirm("לאפס את כל ההתקדמות של המשחק?")){
       localStorage.removeItem(STORAGE_KEY);
       state = loadState();
