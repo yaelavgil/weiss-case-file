@@ -1580,6 +1580,9 @@ function renderSetup(){
 
   const resetBtn = el("button","danger-btn","איפוס התקדמות המשחק (למארח בלבד)");
   resetBtn.onclick = ()=>{
+    const code = prompt("קוד הורה לאישור האיפוס:");
+    if(code===null) return;
+    if(normalize(code)!==normalize(PARENT_CODE)){ alert("קוד שגוי."); return; }
     if(confirm("לאפס את כל ההתקדמות של המשחק?")){
       localStorage.removeItem(STORAGE_KEY);
       state = loadState();
