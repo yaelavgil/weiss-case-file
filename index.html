@@ -135,7 +135,22 @@
   .prog-pct{font-variant-numeric:tabular-nums;font-weight:800;color:var(--gold);font-size:14px;}
   .prog-bar{height:11px;border-radius:999px;background:var(--paper-3);overflow:hidden;border:1px solid var(--rule);}
   .prog-bar > div{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .6s ease;}
+  .prog-bar-wrap{position:relative;height:22px;display:flex;align-items:center;}
+  .prog-bar-wrap .prog-bar{width:100%;}
+  .prog-slider{
+    position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;
+    -webkit-appearance:none;appearance:none;background:transparent;
+  }
+  .prog-slider::-webkit-slider-thumb{-webkit-appearance:none;width:100%;height:22px;}
+  .prog-slider::-moz-range-thumb{width:100%;height:22px;border:none;background:transparent;}
+  .prog-slider::-moz-range-track{background:transparent;}
   .prog-label{font-size:12px;color:var(--ink-faint);margin-top:5px;font-weight:300;}
+  .back-step-link{
+    display:block;background:none;border:none;padding:0;margin-top:6px;
+    font-size:11.5px;font-family:inherit;color:var(--ink-faint);cursor:pointer;
+    text-decoration:underline;text-underline-offset:2px;
+  }
+  .back-step-link:hover{color:var(--ink);}
 
   .stage{flex:1;padding:24px 18px 90px;display:flex;flex-direction:column;gap:16px;}
 
@@ -726,13 +741,14 @@ const STEPS = [
     wrongMsg:"קוד שגוי. תבדקו שוב מתחת למחזיק.",
     completion:
 `קוד אומת.
-יש כאן קופסה שמישהו לא רצה שתמצאו.`
+עוד רמז מחכה כאן:
+"הדלק מוחבא במקום נמוך, מתחת למשהו רך ונעים."`
   },
   {
     id:"family_owala", type:"family", weight:9, badge:"ממצא · משפחתי", dark:true,
-    title:"הקופסה שמסתתרת במטבח",
+    title:"מקום נמוך, משהו רך",
     narrative:
-`קופסה יפה מסתתרת כאן במטבח.
+`במקום נמוך, מתחת למשהו רך ונעים — שם מסתתרת קופסה יפה.
 בפנים: בקבוקי מים, אחד לכל בן משפחה.
 נראה שהפולשים תכננו לקחת אותם איתם לדרך — ובלעדיהם, הם לא יגיעו רחוק.
 
@@ -814,6 +830,53 @@ function el(tag, cls, html){
 }
 function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
+function hasPreviousStep(){
+  const idx = STEPS.indexOf(currentStep());
+  for(let i=idx-1;i>=0;i--){ if(isEnabled(STEPS[i])) return true; }
+  return false;
+}
+function goBack(){
+  const idx = STEPS.indexOf(currentStep());
+  for(let i=idx-1;i>=0;i--){
+    if(isEnabled(STEPS[i])){
+      delete state.completed[STEPS[i].id];
+      saveState(state);
+      closeParentModal();
+      render();
+      return;
+    }
+  }
+}
+
+function jumpToPercent(targetPct){
+  const enabledSteps = STEPS.filter(isEnabled);
+  const total = totalWeight();
+  if(total===0) return;
+  let cum = 0, cutoffIndex = -1;
+  for(let i=0;i<enabledSteps.length;i++){
+    cum += enabledSteps[i].weight;
+    if((cum/total)*100 <= targetPct + 0.4){ cutoffIndex = i; } else { break; }
+  }
+  enabledSteps.forEach((s,i)=>{
+    if(i<=cutoffIndex){ state.completed[s.id] = true; }
+    else { delete state.completed[s.id]; }
+  });
+  saveState(state);
+  closeParentModal();
+  render();
+}
+function onProgressPreview(val){
+  const bar = document.querySelector(".prog-bar > div");
+  const pctEl = document.querySelector(".prog-pct");
+  if(bar) bar.style.width = val + "%";
+  if(pctEl) pctEl.textContent = val + "%";
+}
+function onProgressCommit(val){
+  const current = percent();
+  const target = Math.max(0, Math.min(Number(val), current));
+  jumpToPercent(target);
+}
+
 function progressHeaderHTML(){
   const p = percent();
   return `
@@ -822,8 +885,14 @@ function progressHeaderHTML(){
         <span class="prog-title">🐾 תיק וייס</span>
         <span class="prog-pct">${p}%</span>
       </div>
-      <div class="prog-bar"><div style="width:${p}%"></div></div>
+      <div class="prog-bar-wrap">
+        <div class="prog-bar"><div style="width:${p}%"></div></div>
+        <input type="range" class="prog-slider" min="0" max="100" value="${p}"
+          oninput="onProgressPreview(this.value)" onchange="onProgressCommit(this.value)"
+          aria-label="גררו אחורה כדי לחזור לשלב קודם">
+      </div>
       <div class="prog-label">${esc(thresholdLabel(p))}</div>
+      ${hasPreviousStep() ? '<button class="back-step-link" onclick="goBack()">שלב קודם →</button>' : ''}
     </div>`;
 }
 
@@ -1427,11 +1496,12 @@ const SETUP_ITEMS = [
   ]},
   { group:"מטבח (שוב)", items:[
     {id:"kitchen_new_holder", label:"מחזיק מגבות נייר חדש, מותקן ונראה לעין"},
-    {id:"kitchen_code_sticker", label:"קוד מודבק מתחת למחזיק החדש", meta:`ברירת מחדל בקוד: "${KITCHEN_CODE}" — ניתן לשנות בקובץ (KITCHEN_CODE)`}
+    {id:"kitchen_code_sticker", label:"קוד מודבק מתחת למחזיק החדש", meta:`ברירת מחדל בקוד: "${KITCHEN_CODE}" — ניתן לשנות בקובץ (KITCHEN_CODE)`},
+    {id:"kitchen_riddle_note", label:"ליד הקוד: פתק/רמז \"הדלק מוחבא במקום נמוך, מתחת למשהו רך ונעים\"", meta:"מכוון למתחת למיטת ההורים, בלי לומר זאת במפורש"}
   ]},
   { group:"פינאלה משפחתי", items:[
     {id:"owala_all4", label:"כל ארבעת בקבוקי המים אותרו ונאספו יחד"},
-    {id:"owala_wrap", label:"עטופים כקופסה יפה אחת, מוסתרת במטבח"},
+    {id:"owala_wrap", label:"עטופים כקופסה יפה אחת, מוסתרת מתחת למיטת ההורים"},
     {id:"owala_test", label:"בדקתי את מסך הסיום באפליקציה"}
   ]},
   { group:"מסך סיום", items:[
