@@ -99,6 +99,29 @@
   button{font-family:inherit;}
   .app{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;}
 
+  /* parent-access tab — discreet, always on the side */
+  .parent-tab{
+    position:fixed; insetInlineStart:0; top:50%; transform:translateY(-50%);
+    z-index:20; background:var(--paper-2); border:1px solid var(--rule); border-inline-start:none;
+    border-radius:0 10px 10px 0; padding:12px 7px; font-size:15px; opacity:.32; cursor:pointer;
+    transition:opacity .2s ease; line-height:1;
+  }
+  .parent-tab:hover, .parent-tab:focus-visible{opacity:.85;}
+  .parent-overlay{
+    position:fixed; inset:0; z-index:50; background:rgba(30,24,16,.55);
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .parent-modal{
+    background:var(--paper); border-radius:16px; padding:24px 20px; max-width:340px; width:100%;
+    box-shadow:var(--shadow); text-align:center;
+  }
+  .parent-modal h3{font-size:17px;margin-bottom:2px;}
+  .parent-modal .sub{font-size:13px;color:var(--ink-faint);margin-bottom:10px;}
+  .parent-modal .answer-box{
+    margin:14px 0 0;background:var(--green-soft);color:var(--green);border-radius:10px;
+    padding:12px;font-weight:700;font-size:15px;white-space:pre-line;
+  }
+
   /* progress header */
   .prog-head{
     position:sticky;top:0;z-index:5;
@@ -398,6 +421,7 @@
   <span class="deco-ring"></span>
   <span class="deco-torn"></span>
 </div>
+<div class="parent-tab" role="button" tabindex="0" aria-label="גישת הורה" onclick="openParentModal()">🐾</div>
 <div id="root"></div>
 
 <script>
@@ -425,6 +449,10 @@ const CANDY_CODE = "אנלוס";
 
 // הקוד שנדביק מתחת למחזיק המגבות החדש במטבח. שנו כרצונכם.
 const KITCHEN_CODE = "דלק";
+
+// קוד הורה: תמיד זמין דרך הכפתור הקטן בצד המסך, כדי לחשוף רמז/קוד או לדלג הלאה
+// אם ילדה נתקעת גם אחרי כל הרמזים.
+const PARENT_CODE = "מיאגי";
 
 function normalize(s){
   return (s||"").toString().trim().toLowerCase().replace(/\s+/g,"").replace(/["'׳״]/g,"");
@@ -617,6 +645,11 @@ const STEPS = [
     narrative:
 `נראה שאחד הפולשים השאיר כאן מישהו מאחור...
 חפשו בחדר של אנה משהו שלא היה שם לפני שיצאתם.`,
+    hints:[
+      "רמז 1: חפשו בין הבובות.",
+      "רמז 2: לדיירת החדשה יש קצת יותר ידיים מהמקובל.",
+      "רמז 3: שמונה, ליתר דיוק."
+    ],
     textGate:{
       placeholder:"מה זה?",
       correctAnswer: ANNA_OCTOPUS_ANSWER,
@@ -633,8 +666,9 @@ const STEPS = [
     id:"anna_items", type:"major", weight:9, badge:"ממצא · אנה", person:"אנה",
     title:"ממש קרוב",
     narrative:
-`התמנון ממשיך להצביע. רך... צפוף... ומלא בחברים.`,
-    hints:["רמז: הסתכלו ממש מתחתיו ובין הבובות."],
+`התמנון ממשיך להצביע — לא פנימה, אלא החוצה.
+משהו מחכה על הרצפה, ממש מאחורי הסלסלה.`,
+    hints:["רמז: תסתכלו מאחורי הסלסלה, לא בתוכה."],
     confirmLabel:"מצאנו! 🍩",
     rewardEmoji:"🍩",
     completion:
@@ -649,7 +683,7 @@ const STEPS = [
     hints:[
       "רמז 1: זה לא אוכל, וזה לא כלי בישול.",
       "רמז 2: הוא עומד ליד הכיור או על השיש, ומחזיק גליל.",
-      "רמז 3: תבדקו את מחזיק המגבות — ותסתכלו גם מתחת."
+      "רמז 3: תבדקו את מחזיק נייר המגבת — ותסתכלו גם מתחת."
     ],
     code: KITCHEN_CODE,
     wrongMsg:"קוד שגוי. תבדקו שוב מתחת למחזיק.",
@@ -1231,8 +1265,84 @@ function complete(id){
   saveState(state);
 }
 
+/* ---------- parent override ---------- */
+function getStepAnswer(step){
+  if(step.type==="codeEntry") return step.code || null;
+  if(step.type==="multiFind") return step.revealWord || null;
+  if(step.textGate) return step.textGate.correctAnswer || null;
+  return null;
+}
+
+function closeParentModal(){
+  const existing = document.getElementById("parent-overlay");
+  if(existing) existing.remove();
+}
+
+function openParentModal(){
+  closeParentModal();
+  const step = currentStep();
+
+  const overlay = el("div","parent-overlay");
+  overlay.id = "parent-overlay";
+  const modal = el("div","parent-modal");
+  modal.innerHTML = `<h3>🐾 גישת הורה</h3><div class="sub">לשימוש ההורים בלבד</div>`;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "text-input";
+  input.placeholder = "קוד הורה...";
+  input.style.marginTop = "4px";
+  modal.appendChild(input);
+
+  const msg = el("div","wrong-msg","");
+  modal.appendChild(msg);
+
+  const actions = el("div");
+  actions.style.cssText = "display:flex;flex-direction:column;gap:10px;margin-top:14px;";
+  const revealBtn = el("button","btn ghost","גלו את קוד/תשובת השלב");
+  const skipBtn = el("button","btn primary","דלגו לשלב הבא");
+  actions.appendChild(revealBtn);
+  actions.appendChild(skipBtn);
+  modal.appendChild(actions);
+
+  const closeBtn = el("button","btn ghost","סגירה");
+  closeBtn.style.marginTop = "8px";
+  modal.appendChild(closeBtn);
+
+  function checkCode(){
+    if(normalize(input.value)===normalize(PARENT_CODE)) return true;
+    input.classList.add("input-wrong");
+    msg.textContent = "קוד שגוי.";
+    setTimeout(()=>input.classList.remove("input-wrong"), 400);
+    return false;
+  }
+
+  revealBtn.onclick = ()=>{
+    if(!checkCode()) return;
+    const ans = getStepAnswer(step);
+    let box = modal.querySelector(".answer-box");
+    if(!box){ box = el("div","answer-box"); modal.insertBefore(box, closeBtn); }
+    box.textContent = ans ? `הקוד/תשובה לשלב הנוכחי:\n${ans}` : "אין קוד בשלב הזה — אפשר רק לדלג הלאה.";
+  };
+  skipBtn.onclick = ()=>{
+    if(!checkCode()) return;
+    complete(step.id);
+    closeParentModal();
+    render();
+  };
+  closeBtn.onclick = closeParentModal;
+  overlay.onclick = (e)=>{ if(e.target===overlay) closeParentModal(); };
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+  input.focus();
+}
+
 /* ---------- host setup mode ---------- */
 const SETUP_ITEMS = [
+  { group:"גישת הורה", items:[
+    {id:"parent_code_known", label:`קוד ההורה: "${PARENT_CODE}"`, meta:"זמין בכל שלב דרך כפתור הכפה הקטן והעדין בצד המסך — מציג את התשובה/קוד הנוכחי, או מדלג לשלב הבא בלחיצה אחת. שימושי אם ילדה נתקעת גם אחרי כל הרמזים"}
+  ]},
   { group:"שולחן קבלת פנים", items:[
     {id:"table_cake", label:"עוגת גבינה על השולחן"},
     {id:"table_snacks_kids", label:"חטיפים/ממתקים לבנות"},
@@ -1273,8 +1383,8 @@ const SETUP_ITEMS = [
   ]},
   { group:"חדר אנה", items:[
     {id:"anna_octopus", label:"התמנון (Flying Tiger) מונח בחדר של אנה — לא בין הבובות בפירוש, אלא ליד/על סל הבובות הגדול"},
-    {id:"anna_basket", label:"ממצא אנה מוסתר מתחת לתכולת הסל / בין הבובות בתוכו", meta:"התמנון ה'מצביע' כלפי מטה — ודאו שהוא באמת פונה לכיוון הסל בפועל"},
-    {id:"anna_items", label:"סופגניית ה-squishy + פריטי בונוס ריחניים, בתוך/מתחת לתכולת הסל"}
+    {id:"anna_basket", label:"ממצא אנה מוסתר על הרצפה, מאחורי סלסלת הבובות — לא בתוכה", meta:"התמנון ה'מצביע' כלפי מטה — ודאו שהוא באמת פונה לכיוון הסלסלה בפועל"},
+    {id:"anna_items", label:"סופגניית ה-squishy + פריטי בונוס ריחניים, על הרצפה מאחורי סלסלת הבובות (לא בתוכה!)"}
   ]},
   { group:"מטבח (שוב)", items:[
     {id:"kitchen_new_holder", label:"מחזיק מגבות נייר חדש, מותקן ונראה לעין"},
