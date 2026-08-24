@@ -1,0 +1,1347 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<title>תיק וייס: 10 הימים הנעדרים</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2e8d3; --paper-2:#e9dcbe; --paper-3:#ddcda3;
+    --ink:#3b2f22; --ink-soft:#6b5c47; --ink-faint:#9c8a6c;
+    --navy:#1e2a45; --navy-soft:#2b3a5c; --navy-ink:#eee6d2;
+    --red:#b13c30; --red-soft:#f1d9cf;
+    --green:#3f6b46; --green-soft:#dbe6d2;
+    --blue:#4f7089; --blue-soft:#dbe6ec;
+    --purple:#8a5f83; --purple-soft:#ecdbe8;
+    --gold:#b3872e;
+    --shadow: 0 1px 0 rgba(59,47,34,.1), 0 10px 24px -14px rgba(59,47,34,.35);
+    --rule: rgba(59,47,34,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#211a12; --paper-2:#2a2117; --paper-3:#352a1d;
+      --ink:#ece0c8; --ink-soft:#c9baa0; --ink-faint:#8f8265;
+      --navy:#2a3a5c; --navy-soft:#34456b; --navy-ink:#f2ead6;
+      --red:#e08b7d; --red-soft:#3d2521;
+      --green:#9dbb95; --green-soft:#243021;
+      --blue:#9ac0d6; --blue-soft:#20303a;
+      --purple:#cfa6c7; --purple-soft:#2f2333;
+      --gold:#e0b95c;
+      --shadow: 0 1px 0 rgba(0,0,0,.3), 0 12px 26px -14px rgba(0,0,0,.65);
+      --rule: rgba(236,230,212,.14);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#211a12; --paper-2:#2a2117; --paper-3:#352a1d;
+    --ink:#ece0c8; --ink-soft:#c9baa0; --ink-faint:#8f8265;
+    --navy:#2a3a5c; --navy-soft:#34456b; --navy-ink:#f2ead6;
+    --red:#e08b7d; --red-soft:#3d2521;
+    --green:#9dbb95; --green-soft:#243021;
+    --blue:#9ac0d6; --blue-soft:#20303a;
+    --purple:#cfa6c7; --purple-soft:#2f2333;
+    --gold:#e0b95c;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 12px 26px -14px rgba(0,0,0,.65);
+    --rule: rgba(236,230,212,.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, color-mix(in srgb, var(--gold) 12%, transparent), transparent),
+      radial-gradient(ellipse 700px 460px at 100% 100%, color-mix(in srgb, var(--ink) 5%, transparent), transparent),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Heebo","Arial Hebrew",Arial,sans-serif;
+    font-weight:400;
+    direction:rtl;
+    line-height:1.6;
+    min-height:100%;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  /* subtle paper grain, fixed so it never scrolls away */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.05;
+    mix-blend-mode:multiply;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) body::before{ mix-blend-mode:overlay; opacity:.08; } }
+  :root[data-theme="dark"] body::before{ mix-blend-mode:overlay; opacity:.08; }
+
+  /* corner decorations — fixed to viewport, kept out of the readable center */
+  .deco{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .deco-paw{position:absolute; font-size:30px; opacity:.16; filter:grayscale(1) brightness(.6);}
+  .deco-paw.tl{top:14px; insetInlineStart:10px; transform:rotate(-18deg);}
+  .deco-paw.br{bottom:18px; insetInlineEnd:14px; transform:rotate(12deg) scaleX(-1); font-size:24px;}
+  .deco-tape{
+    position:absolute; top:-6px; insetInlineEnd:8%; width:86px; height:30px;
+    background:linear-gradient(180deg, rgba(230,220,190,.55), rgba(230,220,190,.35));
+    border:1px solid rgba(59,47,34,.08);
+    transform:rotate(6deg);
+  }
+  .deco-ring{
+    position:absolute; bottom:-30px; insetInlineStart:-30px; width:150px; height:150px; border-radius:50%;
+    background:radial-gradient(circle, transparent 54%, rgba(120,90,55,.14) 58%, rgba(120,90,55,.14) 63%, transparent 67%);
+  }
+  .deco-torn{
+    position:absolute; top:0; insetInlineEnd:0; width:70px; height:70px;
+    background:var(--paper-3);
+    clip-path:polygon(100% 0, 0 0, 8% 14%, 18% 6%, 28% 18%, 38% 8%, 50% 20%, 62% 6%, 74% 18%, 86% 4%, 100% 16%);
+    opacity:.5;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  h1,h2,h3{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:700;text-wrap:balance;margin:0;}
+  button{font-family:inherit;}
+  .app{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;}
+
+  /* progress header */
+  .prog-head{
+    position:sticky;top:0;z-index:5;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+    padding:10px 18px 12px;
+  }
+  .prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .prog-title{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:700;font-size:14.5px;color:var(--ink);}
+  .prog-pct{font-variant-numeric:tabular-nums;font-weight:800;color:var(--gold);font-size:14px;}
+  .prog-bar{height:11px;border-radius:999px;background:var(--paper-3);overflow:hidden;border:1px solid var(--rule);}
+  .prog-bar > div{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .6s ease;}
+  .prog-label{font-size:12px;color:var(--ink-faint);margin-top:5px;font-weight:300;}
+
+  .stage{flex:1;padding:24px 18px 90px;display:flex;flex-direction:column;gap:16px;}
+
+  .badge-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:999px;}
+  .badge.major{background:var(--red-soft);color:var(--red);}
+  .badge.bonus{background:var(--green-soft);color:var(--green);}
+  .badge.hard{background:var(--navy);color:var(--navy-ink);}
+  .badge.person{background:var(--paper-3);color:var(--ink-soft);}
+  .badge.opt{background:var(--blue-soft);color:var(--blue);border:1px dashed var(--blue);}
+
+  .card{
+    background:var(--paper-2);border:1px solid var(--rule);border-radius:4px 16px 16px 16px;
+    padding:26px 20px 22px;box-shadow:var(--shadow);
+    animation:rise .35s ease;
+    position:relative;
+  }
+  .card::before{
+    content:"";position:absolute;top:-8px;insetInlineStart:22px;width:64px;height:20px;
+    background:linear-gradient(180deg, rgba(230,220,190,.7), rgba(230,220,190,.45));
+    border:1px solid rgba(59,47,34,.08);transform:rotate(-4deg);
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .card h2{font-size:21px;margin-bottom:10px;font-weight:700;}
+  .narrative{white-space:pre-line;font-size:16px;font-weight:400;color:var(--ink);}
+
+  .hintbox{margin-top:14px;border-top:1px dashed var(--rule);padding-top:12px;}
+  .hint-line{font-size:14px;font-weight:300;color:var(--ink-soft);margin-bottom:6px;white-space:pre-line;}
+  .hint-btn{
+    background:none;border:1px dashed var(--ink-faint);color:var(--ink-faint);
+    font-size:13px;font-weight:500;padding:7px 14px;border-radius:999px;cursor:pointer;
+  }
+  .hint-btn:hover{color:var(--ink);border-color:var(--ink);}
+
+  .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+  .btn{
+    appearance:none;border:none;border-radius:12px;padding:14px 18px;font-size:16px;font-weight:500;
+    cursor:pointer;color:var(--navy-ink);background:var(--navy);transition:transform .15s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(.98);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn.primary{background:linear-gradient(120deg,var(--green),var(--gold));color:#fff;}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rule);}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  /* evidence rows — per-object code entry (replaces plain checkmarks) */
+  .evidence-list{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+  .evidence-row{
+    display:flex;flex-direction:column;gap:8px;background:var(--paper-3);
+    border-radius:10px;padding:12px 14px;border:1px dashed var(--rule);
+  }
+  .ev-top{display:flex;align-items:center;gap:10px;}
+  .ev-thumb{
+    flex:none;width:40px;height:40px;border-radius:4px;background:var(--paper);
+    border:1.5px dashed var(--rule);display:flex;align-items:center;justify-content:center;
+    font-size:19px;opacity:.4;transition:opacity .3s ease, transform .3s ease;
+  }
+  .ev-thumb.revealed{
+    opacity:1;border:2px solid #fff;background:#fff;box-shadow:0 2px 6px rgba(59,47,34,.25);
+    transform:rotate(-4deg);animation:stampIn .45s ease;
+  }
+  .evidence-row .ev-label{flex:1;font-size:14.5px;font-weight:400;}
+  .evidence-row .ev-field{position:relative;display:flex;align-items:center;gap:8px;}
+  .evidence-input{
+    width:64px;padding:9px 6px;border-radius:8px;border:1.5px solid var(--rule);
+    background:var(--paper);color:var(--ink);font-size:18px;font-weight:700;text-align:center;
+    font-family:inherit;
+  }
+  .evidence-input:focus{outline:2px solid var(--gold);border-color:var(--gold);}
+  .evidence-input.field-correct{border-color:var(--green);animation:stampIn .4s ease;}
+  .evidence-input.field-wrong{border-color:var(--red);animation:shake .3s;}
+  @keyframes stampIn{0%{transform:scale(1) rotate(0);}45%{transform:scale(1.16) rotate(-5deg);}100%{transform:scale(1) rotate(0);}}
+  @keyframes shake{25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  .row-stamp{font-size:11px;font-weight:700;color:var(--green);opacity:0;transition:opacity .3s ease;white-space:nowrap;}
+  .row-stamp.show{opacity:1;}
+  .row-wrong-msg{font-size:11.5px;font-weight:400;color:var(--red);margin-top:2px;min-height:14px;}
+
+  /* moana / pez reveal */
+  .moana-reveal{text-align:center;margin-top:16px;}
+  .moana-cap{font-size:12.5px;font-weight:300;color:var(--ink-faint);margin-top:8px;}
+  .pez-figure{
+    font-size:56px;display:inline-block;transform-origin:bottom center;
+    animation:pezPop .5s ease-out, pezTiltLoop 3.2s ease-in-out .5s 2;
+  }
+  .pez-figure.no-anim{animation:none;}
+  @keyframes pezPop{0%{transform:scale(.3) translateY(24px);opacity:0;}60%{transform:scale(1.12);opacity:1;}100%{transform:scale(1);opacity:1;}}
+  @keyframes pezTiltLoop{
+    0%{transform:rotate(0deg);}
+    10%{transform:rotate(0deg);}
+    25%{transform:rotate(-22deg);}
+    35%{transform:rotate(-22deg);}
+    45%{transform:rotate(0deg);}
+    60%{transform:rotate(0deg);}
+    75%{transform:rotate(-22deg);}
+    85%{transform:rotate(-22deg);}
+    100%{transform:rotate(0deg);}
+  }
+
+  /* letter-tile reorder puzzle */
+  .tile-row{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+  .letter-tile{
+    width:52px;height:64px;border-radius:10px;background:var(--paper);border:2px solid var(--rule);
+    display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--ink);
+    cursor:pointer;user-select:none;box-shadow:var(--shadow);transition:transform .15s ease, border-color .15s ease;
+  }
+  .letter-tile.selected{border-color:var(--gold);transform:translateY(-6px);}
+  .letter-tile:active{transform:scale(.95);}
+  .puzzle-wrong-msg{text-align:center;color:var(--red);font-size:13.5px;font-weight:400;margin-top:10px;min-height:16px;white-space:pre-line;}
+  .shake-row{animation:shakeRow .35s;}
+  @keyframes shakeRow{25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+  /* octopus illustrated reveal */
+  .octo-wrap{text-align:center;margin-top:10px;margin-bottom:6px;}
+  .octo{
+    font-size:64px;display:inline-block;transform-origin:center bottom;
+    animation:octoPop .6s ease-out, octoWiggle 2.2s ease-in-out .6s 2;
+  }
+  .octo.no-anim{animation:none;}
+  @keyframes octoPop{0%{transform:scale(.3) translateY(26px);opacity:0;}60%{transform:scale(1.14) translateY(-6px);opacity:1;}100%{transform:scale(1) translateY(0);opacity:1;}}
+  @keyframes octoWiggle{0%,100%{transform:rotate(0deg) translateY(0);}20%{transform:rotate(-8deg);}40%{transform:rotate(6deg);}60%{transform:rotate(-4deg);}80%{transform:rotate(9deg) translateY(3px);}}
+  .octo-arrow{
+    display:block;font-size:24px;margin-top:2px;opacity:0;
+    animation:arrowIn .4s ease .9s forwards, arrowBounce 1s ease-in-out 1.3s 3;
+  }
+  .octo-arrow.no-anim{opacity:1;animation:none;}
+  @keyframes arrowIn{to{opacity:1;}}
+  @keyframes arrowBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  .card.dark-reveal{background:#1e2a45;border-color:transparent;}
+  .card.dark-reveal h2, .card.dark-reveal .narrative{color:#f2ead6;}
+  .card.dark-reveal .hint-line{color:#c7cede;}
+  .card.dark-reveal .hint-btn{color:#9fb0cc;border-color:#9fb0cc;}
+  .card.dark-reveal .hintbox{border-top-color:rgba(242,234,214,.2);}
+  .card.dark-reveal .badge.major{background:rgba(255,255,255,.12);color:#f2ead6;}
+  .card.dark-reveal::after{
+    content:"🐾";position:absolute;bottom:10px;insetInlineEnd:16px;font-size:16px;opacity:.2;
+  }
+
+  /* Shila's reveal — soft blue gingham, Bath & Body Works-inspired */
+  .card.pink-reveal{
+    background:
+      repeating-linear-gradient(0deg, rgba(90,130,190,.14) 0 2px, transparent 2px 22px),
+      repeating-linear-gradient(90deg, rgba(90,130,190,.14) 0 2px, transparent 2px 22px),
+      #fdfcf9;
+    border-color:rgba(90,130,190,.4);
+  }
+  .card.pink-reveal h2{color:#3a5a8c;}
+  .card.pink-reveal .narrative{color:#4a5568;}
+  .card.pink-reveal::after{
+    content:"🌸";position:absolute;bottom:10px;insetInlineEnd:16px;font-size:18px;opacity:.4;
+  }
+
+  .decoded-reveal{
+    margin-top:16px;text-align:center;background:var(--navy);color:var(--navy-ink);
+    border-radius:10px;padding:16px;position:relative;animation:stampIn .5s ease;
+  }
+  .decoded-reveal .word{font-size:24px;font-weight:800;letter-spacing:.03em;}
+  .decoded-reveal .cap{font-size:11px;font-weight:400;opacity:.75;margin-bottom:4px;}
+
+  .note-reveal{
+    margin-top:14px;background:var(--paper);border:1px dashed var(--gold);border-radius:10px;
+    padding:14px 16px;font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:400;font-style:italic;font-size:15px;
+    white-space:pre-line;color:var(--ink);
+  }
+
+  /* classified / dark reveal moments (per visual system) */
+  .cert{
+    margin-top:14px;background:var(--navy);color:var(--navy-ink);border:none;border-radius:12px;
+    padding:22px 18px 18px;text-align:center;position:relative;box-shadow:var(--shadow);
+  }
+  .cert::before{
+    content:"מסווג";position:absolute;top:-11px;insetInlineStart:16px;
+    background:var(--red);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;
+    padding:3px 10px;border-radius:999px;
+  }
+  .cert::after{
+    content:"🐾";position:absolute;bottom:8px;insetInlineEnd:12px;font-size:16px;opacity:.25;
+  }
+  .cert .name{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:800;font-size:19px;margin:10px 0;color:#fff;}
+
+  /* landing / intro */
+  .cover{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px 24px;gap:18px;
+  }
+  .case-no{
+    font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--red);
+    background:var(--red-soft);padding:6px 16px;border-radius:3px;transform:rotate(-2deg);
+    border:1.5px solid var(--red);
+  }
+  .cover h1{font-size:clamp(28px,8vw,40px);font-weight:800;}
+  .cover p{color:var(--ink-soft);max-width:380px;white-space:pre-line;font-size:15.5px;font-weight:400;}
+  .paw{font-size:26px;opacity:.6;}
+
+  /* case-closed / final reveal — deliberately dark, regardless of page theme */
+  .ending{
+    text-align:center;padding:56px 24px;display:flex;flex-direction:column;gap:16px;align-items:center;
+    background:#1e2a45;color:#f2ead6;border-radius:0;
+    min-height:100%;flex:1;position:relative;
+  }
+  .ending::before{content:"🐾";position:absolute;top:18px;insetInlineStart:20px;font-size:20px;opacity:.3;}
+  .ending::after{content:"🐾";position:absolute;bottom:18px;insetInlineEnd:20px;font-size:20px;opacity:.3;transform:scaleX(-1);}
+  .ending h1{font-size:clamp(26px,7vw,36px);font-weight:800;color:#f2ead6;}
+  .ending p{white-space:pre-line;color:#cdd3df;max-width:400px;font-size:15.5px;font-weight:400;}
+  .stamp-final{
+    font-weight:800;font-size:20px;color:#8fd39a;border:3px solid #8fd39a;
+    border-radius:10px;padding:10px 22px;transform:rotate(-3deg);
+  }
+
+  /* setup mode */
+  .setup-wrap{max-width:640px;margin:0 auto;padding:20px 18px 80px;}
+  .setup-wrap h1{font-size:22px;margin-bottom:4px;}
+  .setup-wrap .hint{color:var(--ink-faint);font-size:13px;margin-bottom:20px;}
+  .group{font-weight:800;font-size:12.5px;letter-spacing:.08em;color:var(--red);margin:22px 0 8px;}
+  .group:first-of-type{margin-top:0;}
+  .setup-list{list-style:none;padding:0;margin:0;}
+  .setup-list li{
+    display:flex;align-items:flex-start;gap:10px;padding:10px 4px;border-bottom:1px solid var(--rule);
+    font-size:14.5px;cursor:pointer;
+  }
+  .setup-box{
+    flex:none;width:19px;height:19px;margin-top:2px;border:2px solid var(--ink-faint);border-radius:5px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;
+  }
+  .setup-box.checked{background:var(--green);border-color:var(--green);color:#fff;}
+  .setup-list .meta{display:block;color:var(--ink-faint);font-size:12.5px;margin-top:2px;}
+  .toggle-row{
+    display:flex;justify-content:space-between;align-items:center;background:var(--blue-soft);
+    border-radius:10px;padding:12px 14px;margin:10px 0;font-size:14px;
+  }
+  .switch{width:42px;height:24px;border-radius:999px;background:var(--paper-3);position:relative;border:1px solid var(--rule);flex:none;}
+  .switch.on{background:var(--green);}
+  .switch .knob{position:absolute;top:2px;insetInlineStart:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;}
+  .switch.on .knob{transform:translateX(-18px);}
+  .danger-btn{
+    margin-top:26px;width:100%;background:transparent;border:1.5px dashed var(--red);color:var(--red);
+    padding:12px;border-radius:10px;font-size:13.5px;cursor:pointer;
+  }
+  .back-link{display:inline-block;margin-top:18px;color:var(--ink-faint);font-size:13px;text-decoration:none;}
+
+  /* text / code inputs */
+  .text-input{
+    width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid var(--rule);
+    background:var(--paper);color:var(--ink);font-size:16px;font-family:inherit;margin-top:12px;
+  }
+  .text-input:focus{outline:2px solid var(--gold);border-color:var(--gold);}
+  .text-input.input-wrong{border-color:var(--red);animation:shake .3s;}
+  .wrong-msg{color:var(--red);font-size:13px;margin-top:6px;min-height:16px;}
+
+  /* access-code look: used by codeEntry inputs, and any text input on a dark classified card */
+  .text-input.code-input, .dark-reveal .text-input{
+    text-align:center;font-size:20px;font-weight:700;letter-spacing:.28em;
+  }
+  .dark-reveal .text-input{
+    background:rgba(255,255,255,.06);border-color:rgba(242,234,214,.3);color:#f2ead6;
+  }
+  .dark-reveal .text-input::placeholder{color:rgba(242,234,214,.4);letter-spacing:normal;font-weight:400;font-size:15px;}
+  .dark-reveal .wrong-msg{color:#e08b7d;}
+
+  /* star rating */
+  .stars{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+  .star{font-size:30px;line-height:1;cursor:pointer;opacity:.3;transition:opacity .15s ease, transform .15s ease;}
+  .star.on{opacity:1;transform:scale(1.12);}
+  .star:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+
+  /* ending photo */
+  .polaroid{
+    margin:6px auto 0;width:190px;background:#fdfcf8;padding:10px 10px 24px;border-radius:3px;
+    box-shadow:var(--shadow);transform:rotate(-2deg);text-align:center;
+  }
+  .polaroid .frame{
+    width:100%;aspect-ratio:1/1;background:#e7e2d4;border-radius:2px;
+    display:flex;align-items:center;justify-content:center;font-size:36px;
+  }
+  .polaroid .cap{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:500;font-size:12.5px;margin-top:8px;color:#5a5648;}
+</style>
+</head>
+<body>
+<div class="deco" aria-hidden="true">
+  <span class="deco-paw tl">🐾</span>
+  <span class="deco-paw br">🐾</span>
+  <span class="deco-tape"></span>
+  <span class="deco-ring"></span>
+  <span class="deco-torn"></span>
+</div>
+<div id="root"></div>
+
+<script>
+/* ============================================================
+   תיק וייס: 10 הימים הנעדרים — מנוע המשחק
+   קובץ יחיד, ללא בקאנד, ללא build. עריכת תוכן: חפשו CONFIG למטה.
+   ============================================================ */
+
+/* ---------- CONFIG הניתן לעריכה ---------- */
+const SHMULIK_ACCESS_LINE = "גישה לפריט מסווג אושרה.";
+const SHMULIK_BODY_LINE = "נראה שהפולשים לא הסתפקו במה שהיה בבית. במהלך המבצע הם הצליחו להשיג גם פריט אספנות שנמצא בכלל מחוץ לזירה. הבעלות עליו, לעומת זאת, הועברה לשמולמול.";
+const SHMULIK_ITEM_NAME = "2025 Lamine Yamal #10 — FC Barcelona Topps Now — \"העברת המקל: מסי ליאמאל, מספר 10\" — BGS 9.5 GEM MINT";
+const SHMULIK_CARD_URL = "https://courtyard.io/asset/b69f6db8b3de22228ec678fd92c7bbace3c72f95993e90a7f9dc53fc82eb2450"; // קישור לנכס האמיתי
+
+// הקוד הגלום בתצפית הספרים (צופן פיזי בספר הביטלס). כתבו כאן איזו מילת קוד
+// באנגלית תוציאו מהצופן שתכינו בפועל בספר:
+const BEATLES_CODE = "LIVERPOOL"; // מתחבר גם לביטלס (העיר שלהם) וגם לכדורגל (הקבוצה האדומה) — בכוונה
+
+// התשובה הנדרשת לזיהוי התמנון בחדר של אנה (לא נחשף מראש לשחקנים):
+const ANNA_OCTOPUS_ANSWER = "תמנון";
+
+// הקוד שמורכב מהאותיות על חמישה ממתקים חדשים במגירת החטיפים
+// (סוכריית ה-PEZ + 4 שקיות/ממתקים בודדים נוספים) — שילוב של "אנה" ו"לוסי".
+const CANDY_CODE = "אנלוס";
+
+// הקוד שנדביק מתחת למחזיק המגבות החדש במטבח. שנו כרצונכם.
+const KITCHEN_CODE = "דלק";
+
+function normalize(s){
+  return (s||"").toString().trim().toLowerCase().replace(/\s+/g,"").replace(/["'׳״]/g,"");
+}
+
+/* ---------- מבנה השלבים ----------
+   type: 'intro' | 'find' | 'multiFind' | 'codeEntry' | 'major' | 'family' | 'trueEnding'
+*/
+const STEPS = [
+  {
+    id:"intro", type:"intro", weight:3,
+    title:"תיק וייס: 10 הימים הנעדרים",
+    narrative:
+`ברוכים הבאים הביתה. איטליה הייתה שם, אבל עשרה ימים קרו כאן.
+
+עשרה ימים.
+זה הזמן שלקח למשפחה מסתורית להשתלט על הבית שלכם.
+
+החדשות הטובות: מיאגי בחיים, מאושרת, ואולי אפילו קצת יותר מפונקת משהייתה.
+הבית עדיין עומד.
+
+החדשות הפחות ברורות: כמה חפצים כאן כבר לא באותו מקום. אחרים לא היו כאן בכלל לפני עשרה ימים.
+
+ביום העשירי, רגע לפני שחזרתם, החשודים נמלטו. הם לא השאירו כתובת.
+הם כן השאירו ראיות.
+
+נאסוף ראיות ודברים שהושארו מאחור, ולבסוף נתפוס את הפולשים.
+מוכנים?`,
+    confirmLabel:"פותחים את תיק החקירה 🔎"
+  },
+  {
+    id:"play_area_hunt", type:"multiFind", weight:10, badge:"בונוס · אנה", person:"אנה",
+    title:"מה השתנה באזור המשחקים?",
+    narrative:
+`באזור המשחקים משהו לא מסתדר.
+כמה חפצים שם — או שלא היו כאן קודם, או שהוחלפו באחרים.
+לכל אחד מהם מודבקת אות עברית, מוסתרת מאחור.
+מצאו את כולם, ואספו את האותיות.`,
+    items:[
+      {id:"pez", label:"מתקן ה-PEZ של מואנה — האות שמצאתם", expected:"מ", img:"🌺"},
+      {id:"sq1", label:"סקוושי מס׳ 1 — האות שמצאתם", expected:"ו", img:"🧸"},
+      {id:"board", label:"לוח הציור המגנטי — האות שמצאתם", expected:"א", img:"🎨"},
+      {id:"stitch", label:"פריט סטיץ׳ — האות שמצאתם", expected:"נ", img:"👽"},
+      {id:"sq2", label:"סקוושי מס׳ 2 — האות שמצאתם", expected:"ה", img:"🟣"}
+    ],
+    hints:[
+      "רמז 1: יש כאן חמישה חפצים חדשים — לא ארבעה.",
+      "רמז 2: כל אות בפני עצמה לא אומרת כלום. חכו עד שיהיו לכן כל החמש."
+    ],
+    wrongItemMsg:"בדקו שוב את הראיה.",
+    puzzleTitle:"כל הראיות נאספו.",
+    puzzleIntro:
+`מצאתן חמישה חפצים שלא היו כאן קודם.
+ועל כל אחד מהם חיכתה אות.
+
+כנראה שהפולשים ניסו להשאיר לנו הודעה...
+
+אבל, כמובן, לא בסדר הנכון.`,
+    puzzleWrongMsg:
+`זה עדיין לא מסתדר...
+נסו להזיז את הראיות.`,
+    puzzleButtonLabel:"בדקו את הפענוח",
+    revealWord:"מואנה",
+    moanaReveal:true,
+    completion:"עכשיו זה תלוי בכן. לכו לבדוק את הפריט האמיתי מקרוב."
+  },
+  {
+    id:"candy_drawer", type:"codeEntry", weight:7, badge:"בונוס · אנה", person:"אנה",
+    title:"עדות מתוקה",
+    narrative:
+`הסוכרייה מהפז לא הגיעה לבד.
+במגירת החטיפים במטבח מסתתרים עוד ממתקים חדשים שלא היו שם קודם.
+לכל אחד מהם אות. מצאו את כולם, הרכיבו את הקוד, והקלידו אותו כאן.`,
+    hints:[
+      "רמז: סך הכול אמורים להיות חמישה — כולל הסוכרייה מהפז עצמה."
+    ],
+    code: CANDY_CODE,
+    wrongMsg:"עוד לא זה. יש עוד ממתקים למצוא.",
+    completion:"הממצא אותר ✓\nחמישה ממתקים, אות אחת על כל אחד. יחד הם אמרו הכול."
+  },
+  {
+    id:"bathroom_item", type:"find", weight:6,
+    title:"מה השתנה בחדר הרחצה?",
+    narrative:
+`נראה שהפולשים החליטו לשפר קצת את האווירה.
+חפשו בחדר הרחצה משהו שלא היה שם קודם —
+והוא בהחלט דואג שיהיה נעים באף. 😏`,
+    hints:[
+      "רמז 1: הוא קטן, ותפקידו להפוך את החדר לריחני יותר.",
+      "רמז 2: מטהר אוויר."
+    ],
+    confirmLabel:"מצאנו! 🌸",
+    rewardEmoji:"🌸",
+    completion:"הממצא אותר ✓\nממצא אישי במיוחד מסתתר עוד קצת יותר קרוב — בתוך אחד הארונות בחדר הרחצה."
+  },
+  {
+    id:"shila_finding", type:"major", weight:9, badge:"ממצא · שילה", person:"שילה", pink:true,
+    title:"החוקרת הראשית",
+    narrative:
+`הפולשת האם מגלה חיבה מחשידה לריחות נעימים.
+למרבה המזל, הראיה הזאת עוברת לחזקת שילה. 🌸
+חפשו באחד הארונות בחדר הרחצה.`,
+    confirmLabel:"מצאנו! 🧴",
+    rewardEmoji:"🧴",
+    completion:
+`שילה, מצאנו: סט פינוק שלם, בדיוק בטעם שאת אוהבת.
+(הרוזה כבר מחכה למטה. זה לא היה חלק מהחקירה. זה פשוט טוב.)
+
+עכשיו — עולים למעלה.`
+  },
+  {
+    id:"plant_rooftop", type:"find", weight:5, optional:true,
+    title:"הראיה החיה",
+    narrative:
+`עלייה אחת למעלה, ואז עוד קצת — עד הגג.
+החשודים השאירו אחריהם משהו חי.
+הוא לא נובח, לא מדבר, ולא מבקש ארוחת ערב.
+אבל מדי פעם כדאי לתת לו מים.`,
+    hints:[
+      "רמז 1: תחפשו גבוה יותר בבית.",
+      "רמז 2: הוא אוהב להיות ליד חלון.",
+      "רמז 3: תבדקו את אדן החלון בגג."
+    ],
+    confirmLabel:"מצאנו! זה עציץ 🌱",
+    noteReveal:"מתחת לעציץ מסתתר רמז: הממצא של לוסי מסתתר בין המחבטים.",
+    completion:"תושב חדש, ירוק ושקט, מחכה שמישהו ישקה אותו מדי פעם."
+  },
+  {
+    id:"lucy_paddle", type:"major", weight:9, badge:"ממצא · לוסי", person:"לוסי",
+    title:"מגרש לא נכון",
+    narrative:
+`הממצא של לוסי קרוב.
+חפשו במקום שבו מחכים כלים למשחק עם כדור ורשת.
+אבל אחד מהם הגיע כנראה למגרש הלא נכון. 😏`,
+    hints:["רמז: הוא קטן יותר מהחברים שהוא מסתתר ביניהם."],
+    confirmLabel:"מצאנו! 🏓",
+    rewardEmoji:"🏓",
+    completion:
+`לאחר בדיקה מעמיקה התקבלה החלטה:
+מעכשיו לא תופסים את לוסי בלי מחבט טוב.
+לא בחופשה.
+לא בבית של אחרים.
+ולא בשום מקום שבו עלול לצוץ פתאום שולחן פינג־פונג. 😝
+
+עכשיו — יורדים למטה.`
+  },
+  {
+    id:"living_room_clue", type:"find", weight:5,
+    title:"משהו בסלון",
+    narrative:
+`גם בסלון קרה משהו, אבל הפעם הראיה לא בולטת מדי.
+לפעמים צריך פשוט Let It Be — ולתת לספר הנכון לדבר בשמו.
+הקוד הבא מחכה אצל ארבעה בריטים שעשו לא מעט רעש.`,
+    hints:["רמז לשמוליק: העיר שלהם ידועה גם בזכות קבוצת כדורגל אדומה מפורסמת — ובזכותה, לא רק בזכות המוזיקה. 😉"],
+    confirmLabel:"מצאנו את הספר! 📖",
+    completion:"בפנים מחכה צופן קטן, בכתב יד. הוא לא יפתור את עצמו."
+  },
+  {
+    id:"shmulik_finding", type:"major", weight:9, badge:"ממצא · שמוליק", person:"שמוליק", dark:true,
+    title:"גישה לפריט מסווג",
+    narrative:
+`נראה שהפולשים השאירו אחריהם גם פריט שלא נמצא פיזית בבית.
+אבל כדי לפתוח את התיק, צריך קודם לאתר את קוד הגישה.
+פצחו את הצופן שבספר, והקלידו כאן את המילה שהתקבלה.`,
+    textGate:{
+      placeholder:"הקלידו את הקוד...",
+      correctAnswer: BEATLES_CODE,
+      wrongMsg:"בדקו שוב את הקוד שמצאתם בספר.",
+      buttonLabel:"אישור גישה 🔐"
+    },
+    accessGrantedLabel:"גישה אושרה ✓",
+    revealButtonLabel:"לחשוף את הממצא 🕵️",
+    certReveal:{
+      accessLine: SHMULIK_ACCESS_LINE,
+      bodyLine: SHMULIK_BODY_LINE,
+      name: SHMULIK_ITEM_NAME,
+      url: SHMULIK_CARD_URL,
+      ctaLabel: "פתחו את הפריט ↗",
+      rating: true,
+      ratingLabel: "ועדת החקירה דורשת דירוג"
+    },
+    completion:
+`הדירוג נקלט. התיק הרשמי מאשר: הבעלות רשומה, מאובטחת, ובלתי ניתנת לערעור.
+
+עכשיו — לחדר של אנה.`
+  },
+  {
+    id:"anna_octopus_discovery", type:"find", weight:6, badge:"בונוס · אנה", person:"אנה",
+    title:"ממצא חדש בחדר של אנה",
+    narrative:
+`נראה שאחד הפולשים השאיר כאן מישהו מאחור...
+חפשו בחדר של אנה משהו שלא היה שם לפני שיצאתם.`,
+    textGate:{
+      placeholder:"מה זה?",
+      correctAnswer: ANNA_OCTOPUS_ANSWER,
+      wrongMsg:"לא בדיוק. תסתכלו שוב.",
+      buttonLabel:"מצאנו משהו חדש"
+    },
+    illustration:"octopus",
+    completion:
+`נראה שהוא מנסה להגיד לכן משהו...
+
+הסתכלו לאן הוא מצביע. 👀`
+  },
+  {
+    id:"anna_items", type:"major", weight:9, badge:"ממצא · אנה", person:"אנה",
+    title:"ממש קרוב",
+    narrative:
+`התמנון ממשיך להצביע. רך... צפוף... ומלא בחברים.`,
+    hints:["רמז: הסתכלו ממש מתחתיו ובין הבובות."],
+    confirmLabel:"מצאנו! 🍩",
+    rewardEmoji:"🍩",
+    completion:
+`איזה ממצא. סופגנייה חשודה, ועוד כמה דברים חמודים שחיכו בדיוק לך.
+
+ממצא יפה. אבל התיק עוד לא נסגר — יש עוד עניין אחד, במטבח.`
+  },
+  {
+    id:"kitchen_code", type:"codeEntry", weight:6,
+    title:"המטבח שוב מסתיר משהו",
+    narrative:`תגלו מה הוחלף הפעם.`,
+    hints:[
+      "רמז 1: זה לא אוכל, וזה לא כלי בישול.",
+      "רמז 2: הוא עומד ליד הכיור או על השיש, ומחזיק גליל.",
+      "רמז 3: תבדקו את מחזיק המגבות — ותסתכלו גם מתחת."
+    ],
+    code: KITCHEN_CODE,
+    wrongMsg:"קוד שגוי. תבדקו שוב מתחת למחזיק.",
+    completion:
+`קוד אומת.
+יש כאן קופסה שמישהו לא רצה שתמצאו.`
+  },
+  {
+    id:"family_owala", type:"family", weight:9, badge:"ממצא · משפחתי", dark:true,
+    title:"הקופסה שמסתתרת במטבח",
+    narrative:
+`קופסה יפה מסתתרת כאן במטבח.
+בפנים: בקבוקי מים, אחד לכל בן משפחה.
+נראה שהפולשים תכננו לקחת אותם איתם לדרך — ובלעדיהם, הם לא יגיעו רחוק.
+
+מצאו את הקופסה.`,
+    confirmLabel:"מצאנו! 📦",
+    completion:
+`בלי דלק, אי אפשר להמשיך בבריחה.
+התיק הרשמי סוגר את הפרשה: הראיות נאספו, החשודים נחשפו (מרחוק), והמים חוזרים למשפחת וייס.`
+  },
+  {
+    id:"true_ending", type:"trueEnding", weight:0,
+    title:"התיק פוענח ✓",
+    narrative:
+`עשרה ימים בבית שלכם הספיקו כדי להשאיר כמה עקבות.
+קצת בלגן, קצת אהבה, וכמה ממצאים שחיכו בדיוק לכם.
+
+תודה על האירוח! ❤️
+
+ואם נשאר לכם כוח — תגידו מתי בא לכם שנקפוץ להגיד תודה.
+אנחנו ממש פה בשכונה 🙂`
+  }
+];
+
+/* ---------- state ---------- */
+const STORAGE_KEY = "weissCase_v2";
+const SETUP_KEY = "weissCase_setup_v2";
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { completed:{}, hintsShown:{}, entranceFound:{}, itemAnswers:{}, discoveryOrder:{}, tileOrder:{}, tileSelected:{}, plantEnabled:true, textDrafts:{}, codeDrafts:{}, ratings:{} };
+}
+function saveState(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+let state = loadState();
+
+function isEnabled(step){
+  if(step.optional && step.id==="plant_rooftop") return !!state.plantEnabled;
+  return true;
+}
+function totalWeight(){
+  return STEPS.filter(isEnabled).reduce((a,s)=>a+s.weight,0);
+}
+function doneWeight(){
+  return STEPS.filter(isEnabled).filter(s=>state.completed[s.id]).reduce((a,s)=>a+s.weight,0);
+}
+function percent(){
+  const tw = totalWeight();
+  if(tw===0) return 0;
+  const p = Math.round((doneWeight()/tw)*100);
+  return Math.max(0, Math.min(100, p));
+}
+function thresholdLabel(p){
+  if(p>=100) return "התיק פוענח ✓";
+  if(p>=95) return "כמעט פיצחנו את התיק";
+  if(p>=76) return "החשודים השאירו אחריהם יותר ממה שחשבנו...";
+  if(p>=51) return "התמונה מתחילה להתבהר";
+  if(p>=26) return "מתחילים לחבר את הראיות";
+  return "החקירה רק מתחילה...";
+}
+
+function currentStep(){
+  for(const s of STEPS){
+    if(!isEnabled(s)) continue;
+    if(!state.completed[s.id]) return s;
+  }
+  return STEPS[STEPS.length-1];
+}
+
+/* ---------- rendering ---------- */
+const root = document.getElementById("root");
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html!==undefined) e.innerHTML = html;
+  return e;
+}
+function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function progressHeaderHTML(){
+  const p = percent();
+  return `
+    <div class="prog-head">
+      <div class="prog-top">
+        <span class="prog-title">🐾 תיק וייס</span>
+        <span class="prog-pct">${p}%</span>
+      </div>
+      <div class="prog-bar"><div style="width:${p}%"></div></div>
+      <div class="prog-label">${esc(thresholdLabel(p))}</div>
+    </div>`;
+}
+
+function render(){
+  root.innerHTML = "";
+  const params = new URLSearchParams(location.search);
+  if(params.get("setup")==="true"){ renderSetup(); return; }
+
+  const step = currentStep();
+  const app = el("div","app");
+
+  if(step.type==="intro"){
+    app.appendChild(renderCover(step));
+  } else if(step.type==="trueEnding"){
+    app.insertAdjacentHTML("beforeend", progressHeaderHTML());
+    app.appendChild(renderTrueEnding(step));
+  } else {
+    app.insertAdjacentHTML("beforeend", progressHeaderHTML());
+    const stage = el("div","stage");
+    stage.appendChild(renderStepCard(step));
+    app.appendChild(stage);
+  }
+  root.appendChild(app);
+}
+
+function renderCover(step){
+  const cover = el("div","cover");
+  cover.innerHTML = `
+    <span class="paw">🐾</span>
+    <span class="case-no">תיק מס׳ WF-10 · פתוח</span>
+    <h1>${esc(step.title)}</h1>
+    <p>${esc(step.narrative)}</p>
+  `;
+  const btn = el("button","btn primary", esc(step.confirmLabel));
+  btn.style.maxWidth="320px";
+  btn.onclick = ()=>{ complete(step.id); render(); };
+  cover.appendChild(btn);
+  return cover;
+}
+
+// כדי לשים תמונה אמיתית: הפכו אותה ל-base64 ושימו אותה כאן, לדוגמה:
+// const ENDING_PHOTO_DATA_URL = "data:image/jpeg;base64,....";
+const ENDING_PHOTO_DATA_URL = "";
+
+function renderTrueEnding(step){
+  const wrap = el("div","ending");
+  wrap.innerHTML = `
+    <div class="stamp-final">${esc(step.title)}</div>
+    <div class="polaroid">
+      <div class="frame">${ENDING_PHOTO_DATA_URL ? `<img src="${esc(ENDING_PHOTO_DATA_URL)}" style="width:100%;height:100%;object-fit:cover;border-radius:2px">` : "📸"}</div>
+      <div class="cap">תודה על האירוח!</div>
+    </div>
+    <p>${esc(step.narrative)}</p>
+  `;
+  return wrap;
+}
+
+function badgeRow(step){
+  const row = el("div","badge-row");
+  if(step.badge){
+    const cls = step.badge.includes("קשה")?"hard":step.badge.includes("בונוס")?"bonus":step.badge.includes("ממצא")?"major":"person";
+    row.appendChild(el("span",`badge ${cls}`, esc(step.badge)));
+  }
+  if(step.optional) row.appendChild(el("span","badge opt","אופציונלי"));
+  return row;
+}
+
+function renderStepCard(step){
+  const card = el("div","card"+(step.dark?" dark-reveal":"")+(step.pink?" pink-reveal":""));
+  card.appendChild(badgeRow(step));
+  card.appendChild(el("h2",null, esc(step.title)));
+  const p = el("p","narrative");
+  p.textContent = step.narrative;
+  card.appendChild(p);
+
+  // hints
+  const shown = state.hintsShown[step.id] || 0;
+  if(step.hints && step.hints.length){
+    const hb = el("div","hintbox");
+    for(let i=0;i<shown;i++){
+      const hl = el("div","hint-line"); hl.textContent = step.hints[i];
+      hb.appendChild(hl);
+    }
+    if(shown < step.hints.length){
+      const b = el("button","hint-btn", shown===0?"צריך רמז? 💡":"עוד רמז");
+      b.onclick = ()=>{ state.hintsShown[step.id] = shown+1; saveState(state); render(); };
+      hb.appendChild(b);
+    }
+    card.appendChild(hb);
+  }
+
+  const actions = el("div","actions");
+
+  if(step.type==="multiFind"){
+    renderMultiFind(step, card, actions);
+  } else if(step.type==="codeEntry"){
+    renderCodeEntry(step, card, actions);
+  } else if(step.type==="find" || step.type==="major" || step.type==="family" || step.type==="apparentEnding"){
+    renderFindLike(step, card, actions);
+  }
+
+  card.appendChild(actions);
+  return card;
+}
+
+function renderMultiFind(step, card, actions){
+  state.discoveryOrder = state.discoveryOrder || {};
+  state.tileOrder = state.tileOrder || {};
+  state.tileSelected = state.tileSelected || {};
+  const answers = state.itemAnswers[step.id] || {};
+  const allCorrect = step.items.every(it => normalize(answers[it.id]) === normalize(it.expected));
+
+  if(!allCorrect){
+    const list = el("div","evidence-list");
+    step.items.forEach(it=>{
+      const wasCorrect = normalize(answers[it.id]) === normalize(it.expected);
+      const top = el("div","ev-top");
+      const thumb = el("div","ev-thumb"+(wasCorrect?" revealed":""), wasCorrect ? esc(it.img||"✓") : "❔");
+      const labelEl = el("span","ev-label", esc(it.label));
+      top.appendChild(thumb);
+      top.appendChild(labelEl);
+
+      const field = el("div","ev-field");
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "evidence-input"+(wasCorrect?" field-correct":"");
+      input.dir = "rtl";
+      input.autocomplete = "off";
+      input.value = answers[it.id] || "";
+
+      const stamp = el("span","row-stamp"+(wasCorrect?" show":""),"✓ אושר");
+      const wrongMsgEl = el("div","row-wrong-msg","");
+
+      let debounceTimer = null;
+      const checkField = ()=>{
+        const val = input.value;
+        if(val.trim()===""){
+          input.classList.remove("field-correct","field-wrong");
+          stamp.classList.remove("show");
+          wrongMsgEl.textContent = "";
+          thumb.classList.remove("revealed");
+          thumb.textContent = "❔";
+          return;
+        }
+        const correct = normalize(val)===normalize(it.expected);
+        input.classList.remove("field-correct","field-wrong");
+        void input.offsetWidth;
+        input.classList.add(correct ? "field-correct" : "field-wrong");
+        stamp.classList.toggle("show", correct);
+        wrongMsgEl.textContent = correct ? "" : (step.wrongItemMsg || "בדקו שוב את הראיה.");
+        if(correct){
+          thumb.textContent = it.img || "✓";
+          thumb.classList.add("revealed");
+          state.discoveryOrder[step.id] = state.discoveryOrder[step.id] || [];
+          if(!state.discoveryOrder[step.id].includes(it.id)){
+            state.discoveryOrder[step.id].push(it.id);
+            saveState(state);
+          }
+        } else {
+          thumb.classList.remove("revealed");
+          thumb.textContent = "❔";
+        }
+
+        const current = state.itemAnswers[step.id] || {};
+        const nowDone = step.items.every(x => normalize(x.id===it.id ? val : current[x.id]) === normalize(x.expected));
+        if(nowDone){
+          setTimeout(()=>{ render(); }, 700);
+        }
+      };
+
+      input.oninput = ()=>{
+        state.itemAnswers[step.id] = state.itemAnswers[step.id] || {};
+        state.itemAnswers[step.id][it.id] = input.value;
+        saveState(state);
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(checkField, 350);
+      };
+      input.onblur = checkField;
+      input.onkeydown = (e)=>{ if(e.key==="Enter"){ clearTimeout(debounceTimer); checkField(); } };
+
+      field.appendChild(input);
+      field.appendChild(stamp);
+
+      const rowWrap = el("div","evidence-row");
+      rowWrap.appendChild(top);
+      rowWrap.appendChild(field);
+      rowWrap.appendChild(wrongMsgEl);
+      list.appendChild(rowWrap);
+    });
+    card.appendChild(list);
+    return;
+  }
+
+  const decoded = !!state[step.id+"_decoded"];
+
+  if(!decoded && step.revealWord){
+    // ---- letter-tile reorder puzzle ----
+    if(step.puzzleTitle){
+      const t = el("div", null, esc(step.puzzleTitle));
+      t.style.cssText = "font-family:'Heebo','Arial Hebrew',Arial,sans-serif;font-weight:700;font-size:18px;margin-top:8px;";
+      card.appendChild(t);
+    }
+    if(step.puzzleIntro){
+      const intro = el("p","narrative"); intro.style.marginTop="8px"; intro.textContent = step.puzzleIntro;
+      card.appendChild(intro);
+    }
+
+    if(!state.tileOrder[step.id]){
+      state.tileOrder[step.id] = (state.discoveryOrder[step.id] || step.items.map(i=>i.id)).slice();
+      saveState(state);
+    }
+    const order = state.tileOrder[step.id];
+    const selectedIndex = state.tileSelected[step.id];
+    const selIdx = (selectedIndex===undefined) ? null : selectedIndex;
+
+    const tileRow = el("div","tile-row");
+    order.forEach((itemId, idx)=>{
+      const item = step.items.find(i=>i.id===itemId);
+      const tile = el("div","letter-tile"+(selIdx===idx?" selected":""), esc(item ? item.expected : "?"));
+      tile.setAttribute("role","button");
+      tile.tabIndex = 0;
+      tile.onclick = ()=>{
+        const sel = state.tileSelected[step.id];
+        if(sel===undefined || sel===null){
+          state.tileSelected[step.id] = idx;
+        } else if(sel===idx){
+          state.tileSelected[step.id] = null;
+        } else {
+          const arr = state.tileOrder[step.id];
+          const tmp = arr[sel]; arr[sel] = arr[idx]; arr[idx] = tmp;
+          state.tileSelected[step.id] = null;
+        }
+        saveState(state);
+        render();
+      };
+      tileRow.appendChild(tile);
+    });
+    card.appendChild(tileRow);
+
+    const wrongEl = el("div","puzzle-wrong-msg","");
+    card.appendChild(wrongEl);
+
+    const btn = el("button","btn primary", step.puzzleButtonLabel || "בדיקה ✓");
+    btn.style.marginTop = "14px";
+    btn.onclick = ()=>{
+      const word = state.tileOrder[step.id].map(id => {
+        const item = step.items.find(i=>i.id===id);
+        return item ? item.expected : "";
+      }).join("");
+      if(normalize(word)===normalize(step.revealWord)){
+        state[step.id+"_decoded"] = true;
+        saveState(state);
+        render();
+      } else {
+        wrongEl.textContent = step.puzzleWrongMsg || "זה עדיין לא מסתדר... נסו להזיז את הראיות.";
+        tileRow.classList.add("shake-row");
+        setTimeout(()=>tileRow.classList.remove("shake-row"), 400);
+      }
+    };
+    actions.appendChild(btn);
+    return;
+  }
+
+  // ---- decoded: reward reveal ----
+  if(step.revealWord){
+    const reveal = el("div","decoded-reveal");
+    reveal.innerHTML = `<div class="cap">פוענח!</div><div class="word">${esc(step.revealWord)}</div>`;
+    card.appendChild(reveal);
+  }
+
+  if(step.moanaReveal){
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pez = el("div","moana-reveal");
+    pez.innerHTML = `<span class="pez-figure${reduceMotion?" no-anim":""}">🌺</span><div class="moana-cap">נראה שהראיה הזאת מנסה להגיד לכן משהו... 👀</div>`;
+    card.appendChild(pez);
+  }
+
+  const done = el("div","note-reveal"); done.textContent = step.completion;
+  card.appendChild(done);
+  const btn = el("button","btn primary","להמשך החקירה ←");
+  btn.onclick = ()=>{ complete(step.id); render(); };
+  actions.appendChild(btn);
+}
+
+function renderCodeEntry(step, card, actions){
+  const isConfirmed = state[step.id+"_confirmed"];
+
+  if(isConfirmed){
+    const done = el("div","note-reveal"); done.textContent = step.completion;
+    card.appendChild(done);
+    const btn = el("button","btn primary","להמשך החקירה ←");
+    btn.onclick = ()=>{ complete(step.id); render(); };
+    actions.appendChild(btn);
+    return;
+  }
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "text-input code-input";
+  input.placeholder = "הקלידו את הקוד...";
+  input.value = (state.codeDrafts && state.codeDrafts[step.id]) || "";
+  input.oninput = ()=>{
+    state.codeDrafts = state.codeDrafts || {};
+    state.codeDrafts[step.id] = input.value;
+    saveState(state);
+  };
+  card.appendChild(input);
+  const msg = el("div","wrong-msg","");
+  card.appendChild(msg);
+
+  const btn = el("button","btn primary","אישור הקוד ✓");
+  btn.style.marginTop = "12px";
+  btn.onclick = ()=>{
+    if(normalize(input.value)===normalize(step.code)){
+      state[step.id+"_confirmed"]=true; saveState(state); render();
+    } else {
+      input.classList.add("input-wrong");
+      msg.textContent = step.wrongMsg || "קוד שגוי, נסו שוב.";
+      setTimeout(()=>input.classList.remove("input-wrong"),400);
+    }
+  };
+  card.appendChild(btn);
+}
+
+function renderFindLike(step, card, actions){
+  const isConfirmed = state[step.id+"_confirmed"];
+
+  if(step.textGate && !state[step.id+"_named"]){
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "text-input";
+    input.placeholder = step.textGate.placeholder || "הקלידו כאן...";
+    input.value = (state.textDrafts && state.textDrafts[step.id]) || "";
+    input.oninput = ()=>{
+      state.textDrafts = state.textDrafts || {};
+      state.textDrafts[step.id] = input.value;
+      saveState(state);
+    };
+    card.appendChild(input);
+    const msg = el("div","wrong-msg","");
+    card.appendChild(msg);
+    const btn = el("button","btn primary", step.textGate.buttonLabel || "בדיקה ✓");
+    btn.style.marginTop = "12px";
+    btn.onclick = ()=>{
+      const expected = step.textGate.correctAnswer || "";
+      const ok = expected.trim()==="" || normalize(input.value)===normalize(expected);
+      if(ok){ state[step.id+"_named"]=true; saveState(state); render(); }
+      else {
+        input.classList.add("input-wrong");
+        msg.textContent = step.textGate.wrongMsg || "לא זה, נסו שוב.";
+        setTimeout(()=>input.classList.remove("input-wrong"),400);
+      }
+    };
+    card.appendChild(btn);
+    return;
+  }
+
+  if(step.illustration && !isConfirmed){
+    renderIllustrationReveal(step, card);
+    const btn = el("button","btn primary","להמשך החקירה ←");
+    btn.onclick = ()=>{ state[step.id+"_confirmed"]=true; complete(step.id); render(); };
+    actions.appendChild(btn);
+    return;
+  }
+
+  if(step.certReveal && !isConfirmed){
+    if(step.accessGrantedLabel){
+      const stamp = el("div", null, esc(step.accessGrantedLabel));
+      stamp.style.cssText = "text-align:center;font-weight:800;color:var(--green);font-size:15px;margin-bottom:14px;";
+      card.appendChild(stamp);
+    }
+    const btn = el("button","btn primary", esc(step.revealButtonLabel));
+    btn.onclick = ()=>{ state[step.id+"_confirmed"]=true; saveState(state); render(); };
+    actions.appendChild(btn);
+    return;
+  }
+  if(step.certReveal && isConfirmed){
+    const cert = el("div","cert");
+    if(step.certReveal.accessLine){
+      const access = el("div", null, esc(step.certReveal.accessLine));
+      access.style.cssText = "font-weight:700;font-size:15px;margin-top:6px;color:#f2ead6;";
+      cert.appendChild(access);
+    }
+    if(step.certReveal.bodyLine){
+      const body = el("div", null, esc(step.certReveal.bodyLine));
+      body.style.cssText = "font-size:14px;font-weight:300;color:#c7cede;margin-top:8px;";
+      cert.appendChild(body);
+    }
+    if(step.certReveal.label){
+      cert.appendChild(el("div", null, esc(step.certReveal.label))).style.cssText = "font-size:13px;font-weight:300;color:#9fb0cc;margin-top:6px;";
+    }
+    cert.appendChild(el("div","name", esc(step.certReveal.name)));
+    if(step.certReveal.url){
+      const link = el("a","btn primary", esc(step.certReveal.ctaLabel || "צפו בפריט ↗"));
+      link.href = step.certReveal.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.style.display = "block";
+      link.style.textAlign = "center";
+      link.style.marginTop = "14px";
+      link.style.textDecoration = "none";
+      cert.appendChild(link);
+    }
+    const ratingGiven = state.ratings && state.ratings[step.id] > 0;
+    if(step.certReveal.rating){
+      const label = el("div", null, step.certReveal.ratingLabel || "דרגו את הממצא:");
+      label.style.cssText = "margin-top:16px;font-size:13.5px;color:var(--ink-faint);font-weight:700;";
+      cert.appendChild(label);
+      const starsRow = el("div","stars");
+      const current = (state.ratings && state.ratings[step.id]) || 0;
+      for(let i=1;i<=5;i++){
+        const s = el("span","star"+(i<=current?" on":""),"★");
+        s.setAttribute("role","button");
+        s.tabIndex = 0;
+        s.onclick = ()=>{
+          state.ratings = state.ratings || {};
+          state.ratings[step.id] = i;
+          saveState(state); render();
+        };
+        starsRow.appendChild(s);
+      }
+      cert.appendChild(starsRow);
+    }
+    card.appendChild(cert);
+
+    if(!step.certReveal.rating || ratingGiven){
+      const done = el("div","note-reveal"); done.textContent = step.completion;
+      card.appendChild(done);
+      const btn = el("button","btn primary","להמשך החקירה ←");
+      btn.onclick = ()=>{ complete(step.id); render(); };
+      actions.appendChild(btn);
+    }
+    return;
+  }
+
+  if(!isConfirmed){
+    const btn = el("button","btn primary", esc(step.confirmLabel));
+    btn.onclick = ()=>{ state[step.id+"_confirmed"]=true; saveState(state); render(); };
+    actions.appendChild(btn);
+    return;
+  }
+
+  if(step.rewardEmoji){
+    const reward = el("div","decoded-reveal");
+    reward.innerHTML = `<div class="cap">אותר</div><div class="word">${esc(step.rewardEmoji)}</div>`;
+    card.appendChild(reward);
+  }
+
+  if(step.noteReveal){
+    const nr = el("div","note-reveal"); nr.textContent = step.noteReveal;
+    card.appendChild(nr);
+  }
+  const done = el("div","note-reveal"); done.style.borderStyle="solid"; done.style.fontStyle="normal";
+  done.textContent = step.completion;
+  card.appendChild(done);
+
+  const btn = el("button","btn primary", esc(step.completionLabel || "להמשך החקירה ←"));
+  btn.onclick = ()=>{ complete(step.id); render(); };
+  actions.appendChild(btn);
+}
+
+function renderIllustrationReveal(step, card){
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(step.illustration === "octopus"){
+    const wrap = el("div","octo-wrap");
+    wrap.innerHTML = `<span class="octo${reduceMotion?" no-anim":""}">🐙</span><span class="octo-arrow${reduceMotion?" no-anim":""}">⬇️</span>`;
+    card.appendChild(wrap);
+  }
+  const done = el("div","note-reveal"); done.style.borderStyle="solid"; done.style.fontStyle="normal";
+  done.textContent = step.completion;
+  card.appendChild(done);
+}
+
+function complete(id){
+  state.completed[id] = true;
+  saveState(state);
+}
+
+/* ---------- host setup mode ---------- */
+const SETUP_ITEMS = [
+  { group:"שולחן קבלת פנים", items:[
+    {id:"table_cake", label:"עוגת גבינה על השולחן"},
+    {id:"table_snacks_kids", label:"חטיפים/ממתקים לבנות"},
+    {id:"table_snacks_adults", label:"חטיפים למבוגרים"},
+    {id:"table_drinks", label:"שתייה לבנות + רוזה להורים"},
+    {id:"table_qr", label:"קישור/QR לפתיחת תיק החקירה, מונח בגלוי"}
+  ]},
+  { group:"אזור המשחקים", items:[
+    {id:"play_items", label:"5 חפצים חדשים: PEZ של מואנה, סקוושי 1, לוח ציור מגנטי, פריט סטיץ׳, סקוושי 2", meta:"או כל 5 פריטים אחרים לבחירתכם"},
+    {id:"play_letters", label:"כתבו את האותיות מ / ו / א / נ / ה — אחת על כל חפץ, מוסתרת מאחור", meta:"אות אחת לכל חפץ (לא לפי הסדר של מואנה!) — הילדות מרכיבות את הסדר הנכון באפליקציה עצמה. לשינוי ההתאמות, ערכו expected בקוד לכל פריט ב-play_area_hunt. תמונת החפץ לא מוצגת עד שהאות הנכונה מוקלדת"},
+    {id:"play_pez_note", label:"בתוך מתקן ה-PEZ של מואנה עצמו: פתק קטן בכתב יד \"סוכריות במגירה\"", meta:"האפליקציה לא מגלה מה כתוב בפתק — זו ראיה פיזית בלבד, מוצמדת/מוחבאת ממש בפנים המתקן"}
+  ]},
+  { group:"מגירת הממתקים", items:[
+    {id:"candy_pez", label:"סוכריית ה-PEZ עצמה (מהמתקן של מואנה) — אחד מחמשת הממתקים"},
+    {id:"candy_bags", label:"עוד 4 שקיות/ממתקים בודדים חדשים, מוסתרים בין החטיפים הרגילים במגירה"},
+    {id:"candy_letters", label:"כתבו אות אחת מהמילה \"אנלוס\" על כל אחד מחמשת הממתקים (כולל ה-PEZ)", meta:`הקוד המלא באפליקציה: "${CANDY_CODE}" (CANDY_CODE) — סדר האותיות על הממתקים לא משנה, הן מקלידות את הקוד המורכב, לא אות-אות`},
+    {id:"candy_pez_wrapper", label:"על עטיפת סוכריית ה-PEZ: רמז בכתב יד שיש עוד ממתקים למצוא כדי להשלים את הקוד"}
+  ]},
+  { group:"חדר רחצה", items:[
+    {id:"bathroom_freshener", label:"מטהר אוויר/דיפיוזר ריח חדש בחדר הרחצה", meta:"אין קוד לפענח — רק למצוא אותו"},
+    {id:"shila_item", label:"סט Bath & Body Works, בתוך אחד הארונות בחדר הרחצה"}
+  ]},
+  { group:"גג", items:[
+    {id:"plant_bought", label:"העציץ נקנה והוצב על אדן החלון בגג", meta:"מפעיל/מכבה את שלב הצמח באפליקציה למטה"},
+    {id:"plant_hidden", label:"ממוקם קצת בצד, לא בולט מיד"},
+    {id:"plant_note", label:"פתק הבא (לכיוון המחבטים של לוסי) מוסתר מתחת לעציץ, מאובטח שלא יעוף ברוח"}
+  ]},
+  { group:"לוסי", items:[
+    {id:"lucy_paddle", label:"מחבט הפינג-פונג המקצועי מוסתר בין מחבטי הטניס, בארון של לוסי"}
+  ]},
+  { group:"סלון · צופן הביטלס", items:[
+    {id:"beatles_book_ready", label:"ספר הביטלס נגיש בסלון, בלי לתת רמז חזותי בולט מדי"},
+    {id:"beatles_cipher_made", label:"הכינו צופן פיזי בכתב יד בתוך הספר, שפותר את המילה שהגדרתם", meta:`כרגע מוגדר בקוד: "${BEATLES_CODE}" (BEATLES_CODE) — שנו לפי הצופן שתעצבו`},
+    {id:"beatles_cipher_test", label:"בדקתי שהצופן אכן פתיר ומוביל בדיוק למילה שבקוד"}
+  ]},
+  { group:"שמוליק", items:[
+    {id:"shmulik_card_bought", label:"כרטיס האספנות נרכש/מוזמן (Lamine Yamal) + קישור Courtyard בקובץ"}
+  ]},
+  { group:"חדר אנה", items:[
+    {id:"anna_octopus", label:"התמנון (Flying Tiger) מונח בחדר של אנה — לא בין הבובות בפירוש, אלא ליד/על סל הבובות הגדול"},
+    {id:"anna_basket", label:"ממצא אנה מוסתר מתחת לתכולת הסל / בין הבובות בתוכו", meta:"התמנון ה'מצביע' כלפי מטה — ודאו שהוא באמת פונה לכיוון הסל בפועל"},
+    {id:"anna_items", label:"סופגניית ה-squishy + פריטי בונוס ריחניים, בתוך/מתחת לתכולת הסל"}
+  ]},
+  { group:"מטבח (שוב)", items:[
+    {id:"kitchen_new_holder", label:"מחזיק מגבות נייר חדש, מותקן ונראה לעין"},
+    {id:"kitchen_code_sticker", label:"קוד מודבק מתחת למחזיק החדש", meta:`ברירת מחדל בקוד: "${KITCHEN_CODE}" — ניתן לשנות בקובץ (KITCHEN_CODE)`}
+  ]},
+  { group:"פינאלה משפחתי", items:[
+    {id:"owala_all4", label:"כל ארבעת בקבוקי המים אותרו ונאספו יחד"},
+    {id:"owala_wrap", label:"עטופים כקופסה יפה אחת, מוסתרת במטבח"},
+    {id:"owala_test", label:"בדקתי את מסך הסיום באפליקציה"}
+  ]},
+  { group:"מסך סיום", items:[
+    {id:"ending_photo", label:"הוסיפו תמונה אמיתית של המשפחה המארחת", meta:"החליפו את ENDING_PHOTO_DATA_URL בקובץ ל-base64 של התמונה"}
+  ]}
+];
+
+function renderSetup(){
+  const wrap = el("div","setup-wrap");
+  wrap.innerHTML = `<h1>🔧 מצב הכנה למארח</h1><div class="hint">צ׳קליסט אישי — לא נראה למשפחה. שינויים נשמרים אוטומטית.</div>`;
+
+  let setup = {};
+  try{ setup = JSON.parse(localStorage.getItem(SETUP_KEY)) || {}; }catch(e){}
+
+  const toggleRow = el("div","toggle-row");
+  toggleRow.innerHTML = `<span>העציץ נקנה והופעל במשחק?</span>`;
+  const sw = el("div","switch"+(state.plantEnabled?" on":""));
+  sw.innerHTML = `<div class="knob"></div>`;
+  sw.onclick = ()=>{ state.plantEnabled = !state.plantEnabled; saveState(state); renderSetup2(); };
+  toggleRow.appendChild(sw);
+  wrap.appendChild(toggleRow);
+
+  SETUP_ITEMS.forEach(group=>{
+    wrap.appendChild(el("div","group", esc(group.group)));
+    const ul = el("ul","setup-list");
+    group.items.forEach(it=>{
+      const li = el("li");
+      const checked = !!setup[it.id];
+      li.innerHTML = `<span class="setup-box${checked?" checked":""}">${checked?"✓":""}</span><span>${esc(it.label)}${it.meta?`<span class="meta">${esc(it.meta)}</span>`:""}</span>`;
+      li.onclick = ()=>{
+        setup[it.id] = !setup[it.id];
+        localStorage.setItem(SETUP_KEY, JSON.stringify(setup));
+        renderSetup();
+      };
+      ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+  });
+
+  const resetBtn = el("button","danger-btn","איפוס התקדמות המשחק (למארח בלבד)");
+  resetBtn.onclick = ()=>{
+    if(confirm("לאפס את כל ההתקדמות של המשחק?")){
+      localStorage.removeItem(STORAGE_KEY);
+      state = loadState();
+      alert("אופס. המשחק מתחיל מחדש.");
+    }
+  };
+  wrap.appendChild(resetBtn);
+
+  const back = el("a","back-link","חזרה למסך השחקנים →");
+  back.href = location.pathname;
+  wrap.appendChild(back);
+
+  root.innerHTML = "";
+  root.appendChild(wrap);
+}
+function renderSetup2(){ renderSetup(); }
+
+render();
+</script>
+</body>
+</html>
