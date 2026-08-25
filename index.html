@@ -99,8 +99,6 @@
   h1,h2,h3{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:700;text-wrap:balance;margin:0;}
   button{font-family:inherit;}
   .app{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;position:relative;z-index:1;}
-  @media (min-width:640px){ .app{max-width:600px;} }
-  @media (min-width:1024px){ .app{max-width:680px;} }
 
   /* parent-access tab — discreet, always on the side */
   .parent-tab{
@@ -134,8 +132,8 @@
     padding:10px 18px 12px;
   }
   .prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-  .prog-title{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:700;font-size:14.5px;color:var(--ink);}
-  .prog-pct{font-variant-numeric:tabular-nums;font-weight:800;color:var(--gold);font-size:14px;}
+  .prog-title{font-family:"Heebo","Arial Hebrew",Arial,sans-serif;font-weight:700;font-size:clamp(14.5px, 1vw + 11px, 18px);color:var(--ink);}
+  .prog-pct{font-variant-numeric:tabular-nums;font-weight:800;color:var(--gold);font-size:clamp(14px, 0.9vw + 10.5px, 17px);}
   .prog-bar{height:11px;border-radius:999px;background:var(--paper-3);overflow:hidden;border:1px solid var(--rule);}
   .prog-bar > div{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .6s ease;}
   .prog-bar-wrap{position:relative;height:22px;display:flex;align-items:center;}
@@ -177,20 +175,20 @@
     border:1px solid rgba(59,47,34,.08);transform:rotate(-4deg);
   }
   @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-  .card h2{font-size:21px;margin-bottom:10px;font-weight:700;}
-  .narrative{white-space:pre-line;font-size:16px;font-weight:400;color:var(--ink);}
+  .card h2{font-size:clamp(21px, 2vw + 14px, 30px);margin-bottom:10px;font-weight:700;}
+  .narrative{white-space:pre-line;font-size:clamp(16px, 0.7vw + 13.5px, 20px);font-weight:400;color:var(--ink);}
 
   .hintbox{margin-top:14px;border-top:1px dashed var(--rule);padding-top:12px;}
-  .hint-line{font-size:14px;font-weight:300;color:var(--ink-soft);margin-bottom:6px;white-space:pre-line;}
+  .hint-line{font-size:clamp(14px, 0.5vw + 12.5px, 17px);font-weight:300;color:var(--ink-soft);margin-bottom:6px;white-space:pre-line;}
   .hint-btn{
     background:none;border:1px dashed var(--ink-faint);color:var(--ink-faint);
-    font-size:13px;font-weight:500;padding:7px 14px;border-radius:999px;cursor:pointer;
+    font-size:clamp(13px, 0.4vw + 11.5px, 15px);font-weight:500;padding:7px 14px;border-radius:999px;cursor:pointer;
   }
   .hint-btn:hover{color:var(--ink);border-color:var(--ink);}
 
   .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
   .btn{
-    appearance:none;border:none;border-radius:12px;padding:14px 18px;font-size:16px;font-weight:500;
+    appearance:none;border:none;border-radius:12px;padding:14px 18px;font-size:clamp(16px, 0.5vw + 14.5px, 19px);font-weight:500;
     cursor:pointer;color:var(--navy-ink);background:var(--navy);transition:transform .15s ease, opacity .15s ease;
   }
   .btn:active{transform:scale(.98);}
@@ -420,6 +418,27 @@
   .star.on{opacity:1;transform:scale(1.12);}
   .star:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
 
+  /* desktop/tablet scale-up — placed last so it wins over earlier same-specificity rules */
+  @media (min-width:640px){
+    .app{max-width:600px;}
+    .stage{padding:32px 26px 100px;gap:20px;}
+    .card{padding:32px 28px 28px;}
+    .badge{font-size:12.5px;padding:5px 12px;}
+    .ev-thumb{width:48px;height:48px;font-size:22px;}
+    .evidence-input{width:72px;padding:11px 8px;font-size:20px;}
+    .letter-tile{width:60px;height:74px;font-size:32px;}
+  }
+  @media (min-width:1024px){
+    .app{max-width:680px;}
+    .stage{padding:44px 36px 120px;gap:26px;}
+    .card{padding:40px 36px 34px;}
+    .badge{font-size:13px;padding:6px 14px;}
+    .ev-thumb{width:52px;height:52px;font-size:24px;}
+    .evidence-input{width:78px;padding:12px 8px;font-size:22px;}
+    .letter-tile{width:66px;height:80px;font-size:34px;}
+    .prog-head{padding:16px 30px 18px;}
+    .cover-body{padding:36px 30px 46px;}
+  }
 </style>
 </head>
 <body>
@@ -1431,16 +1450,6 @@ function openParentModal(){
   actions.appendChild(mainBtn);
   modal.appendChild(actions);
 
-  const totalHints = (step.hints && step.hints.length) || 0;
-  const shownHints = state.hintsShown[step.id] || 0;
-  const hintsLeft = Math.max(0, totalHints - shownHints);
-  if(hintsLeft > 0){
-    mainBtn.disabled = true;
-    const note = el("div","hint-line", `גלו קודם את כל הרמזים בשלב (נשארו ${hintsLeft}) כדי לפתוח את האפשרות הזאת.`);
-    note.style.cssText = "margin-top:10px;text-align:center;";
-    modal.insertBefore(note, actions);
-  }
-
   if(hasPreviousStep()){
     const backBtn = el("button","btn ghost","← חזרה לשלב הקודם");
     backBtn.style.marginTop = "8px";
@@ -1465,7 +1474,6 @@ function openParentModal(){
 
   let revealed = false;
   mainBtn.onclick = ()=>{
-    if(hintsLeft > 0) return;
     if(!revealed){
       const ans = getStepAnswer(step);
       let box = modal.querySelector(".answer-box");
@@ -1489,7 +1497,7 @@ function openParentModal(){
 /* ---------- host setup mode ---------- */
 const SETUP_ITEMS = [
   { group:"עזרה לתקועים", items:[
-    {id:"parent_help_known", label:"כפתור הכפה הקטן והעדין בצד המסך", meta:"זמין בכל שלב, בלי קוד. מציג את התשובה/קוד הנוכחי ומדלג לשלב הבא בלחיצה אחת — אבל רק אחרי שכל הרמזים של השלב נחשפו"}
+    {id:"parent_help_known", label:"כפתור הכפה הקטן והעדין בצד המסך", meta:"זמין בכל שלב, בלי קוד ובלי תנאים. מציג את התשובה/קוד הנוכחי ומדלג לשלב הבא בלחיצה אחת"}
   ]},
   { group:"שולחן קבלת פנים", items:[
     {id:"table_cake", label:"עוגת גבינה על השולחן"},
